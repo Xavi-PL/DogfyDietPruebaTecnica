@@ -1,9 +1,11 @@
+import 'package:dogfy_diet_prueba_tecnica/core/utils/date_utilities.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_profile.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_state.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/view/profile_wizard_step.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_breed_selector_widget.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_date_dropdown_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_more_than_one_dog_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_name_input_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_segmented_selector_widget.dart';
@@ -23,7 +25,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = PageController(initialPage: 0);
+    _controller = PageController(initialPage: 3);
   }
 
   @override
@@ -66,6 +68,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
       buildDogBreedStep(context, state),
       buildDogNameStep(context, state),
       buildDogGenderAndSterilizedStep(context, state),
+      buildDogBirthDateStep(context, state),
     ];
   }
 
@@ -149,6 +152,37 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
           onOptionSelected: (option) => BlocProvider.of<DogProfileBloc>(
             context,
           ).add(DogSterilizedSet(sterilized: option!)),
+        ),
+      ],
+      state: state,
+    );
+  }
+
+  Widget buildDogBirthDateStep(BuildContext context, DogProfileState state) {
+    return DogProfileWizardStep(
+      emoji: '🎂',
+      title: '¿Cuándo nació ${state.dogProfile?.name}?',
+      content: [
+        ProfileDateDropdownWidget(
+          hint: 'Mes',
+          options: DateUtilities.getMonthNames(),
+          onDateSelected: (month) =>
+              BlocProvider.of<DogProfileBloc>(context).add(
+                DogBirthMonthSelected(
+                  month: DateUtilities.getMonthIndex(month),
+                ),
+              ),
+        ),
+        SizedBox(height: 16),
+        ProfileDateDropdownWidget(
+          hint: 'Año',
+          options: List.generate(
+            DateTime.now().year - 2006 + 1,
+            (index) => index + 2006,
+          ),
+          onDateSelected: (year) => BlocProvider.of<DogProfileBloc>(
+            context,
+          ).add(DogBirthYearSelected(year: year)),
         ),
       ],
       state: state,

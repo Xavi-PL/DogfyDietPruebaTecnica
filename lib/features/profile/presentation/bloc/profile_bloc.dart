@@ -9,7 +9,8 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     on<MoreThanOneDogTapped>(onMoreThanOneDogTapped);
     on<DogSexSet>(onDogSexSet);
     on<DogSterilizedSet>(onDogSterilizedSet);
-    on<DogBirthDateSelected>(onDogBirthDateSelected);
+    on<DogBirthMonthSelected>(onDogBirthMonthSelected);
+    on<DogBirthYearSelected>(onDogBirthYearSelected);
     on<DogSizeAndWeightSet>(onDogSizeAndWeightSet);
     on<DogActivitySet>(onDogActivitySet);
     on<DogHasIllnessSet>(onDogHasIllnessSet);
@@ -59,16 +60,24 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     );
   }
 
-  void onDogBirthDateSelected(
-    DogBirthDateSelected event,
+  void onDogBirthMonthSelected(
+    DogBirthMonthSelected event,
     Emitter<DogProfileState> emit,
   ) {
     emit(
       state.copyWith(
-        dogProfile: state.dogProfile?.copyWith(
-          birthMonth: event.birthMonth,
-          birthYear: event.birthYear,
-        ),
+        dogProfile: state.dogProfile?.copyWith(birthMonth: event.month),
+      ),
+    );
+  }
+
+  void onDogBirthYearSelected(
+    DogBirthYearSelected event,
+    Emitter<DogProfileState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        dogProfile: state.dogProfile?.copyWith(birthYear: event.year),
       ),
     );
   }

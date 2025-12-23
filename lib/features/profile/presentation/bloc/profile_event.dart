@@ -31,10 +31,15 @@ class DogSterilizedSet extends DogProfileEvent {
 }
 
 // Fourth step of the form.
-class DogBirthDateSelected extends DogProfileEvent {
-  final int birthMonth;
-  final int birthYear;
-  DogBirthDateSelected({required this.birthMonth, required this.birthYear});
+class DogBirthMonthSelected extends DogProfileEvent {
+  final int month;
+  DogBirthMonthSelected({required this.month});
+}
+
+// Also from fourth step of the form.
+class DogBirthYearSelected extends DogProfileEvent {
+  final int year;
+  DogBirthYearSelected({required this.year});
 }
 
 // Fifth step of the form.
