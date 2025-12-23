@@ -43,10 +43,15 @@ class DogBirthYearSelected extends DogProfileEvent {
 }
 
 // Fifth step of the form.
-class DogSizeAndWeightSet extends DogProfileEvent {
+class DogSizeSet extends DogProfileEvent {
   final DogSize size;
-  final int weight;
-  DogSizeAndWeightSet({required this.size, required this.weight});
+  DogSizeSet({required this.size});
+}
+
+// Also from fifth step of the form.
+class DogWeightSet extends DogProfileEvent {
+  final double weight;
+  DogWeightSet({required this.weight});
 }
 
 // Sixth step of the form.

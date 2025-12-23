@@ -9,6 +9,8 @@ import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_more_than_one_dog_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_name_input_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_segmented_selector_widget.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_row_selector.widget.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_weight_input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,7 +27,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = PageController(initialPage: 3);
+    _controller = PageController(initialPage: 0);
   }
 
   @override
@@ -69,6 +71,8 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
       buildDogNameStep(context, state),
       buildDogGenderAndSterilizedStep(context, state),
       buildDogBirthDateStep(context, state),
+      buildDogSizeAndWeightStep(context, state),
+      buildDogActivityStep(context, state),
     ];
   }
 
@@ -164,6 +168,17 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
       title: '¿Cuándo nació ${state.dogProfile?.name}?',
       content: [
         ProfileDateDropdownWidget(
+          hint: 'Año',
+          options: List.generate(
+            DateTime.now().year - 2006 + 1,
+            (index) => index + 2006,
+          ).reversed.toList(),
+          onDateSelected: (year) => BlocProvider.of<DogProfileBloc>(
+            context,
+          ).add(DogBirthYearSelected(year: year)),
+        ),
+        SizedBox(height: 16),
+        ProfileDateDropdownWidget(
           hint: 'Mes',
           options: DateUtilities.getMonthNames(),
           onDateSelected: (month) =>
@@ -173,16 +188,90 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
                 ),
               ),
         ),
-        SizedBox(height: 16),
-        ProfileDateDropdownWidget(
-          hint: 'Año',
-          options: List.generate(
-            DateTime.now().year - 2006 + 1,
-            (index) => index + 2006,
-          ),
-          onDateSelected: (year) => BlocProvider.of<DogProfileBloc>(
+      ],
+      state: state,
+    );
+  }
+
+  Widget buildDogSizeAndWeightStep(
+    BuildContext context,
+    DogProfileState state,
+  ) {
+    return DogProfileWizardStep(
+      title: '¿Qué silueta representa mejor a ${state.dogProfile?.name}?',
+      content: [
+        ProfileRowSelectorWidget(
+          options: [
+            ProfileRowSelectorOption(
+              option: DogSize.small,
+              label: 'small',
+              description:
+                  'Un poco flaquito: Cintura estrecha y se le ven claramente las costillas.',
+              asset: 'dog_size_small.png',
+            ),
+            ProfileRowSelectorOption(
+              option: DogSize.medium,
+              label: 'medium',
+              description:
+                  'Hecho un figurín: La cintura es visible y sus costillas son fáciles de palpar.',
+              asset: 'dog_size_medium.png',
+            ),
+            ProfileRowSelectorOption(
+              option: DogSize.big,
+              label: 'big',
+              description:
+                  'Un poco rellenito: La cintura no es visible y sus costillas son difíciles de palpar.',
+              asset: 'dog_size_big.png',
+            ),
+          ],
+          selected: state.dogProfile?.size,
+          onSelected: (size) => BlocProvider.of<DogProfileBloc>(
             context,
-          ).add(DogBirthYearSelected(year: year)),
+          ).add(DogSizeSet(size: size)),
+        ),
+        SizedBox(height: 40),
+        ProfileWeightInputWidget(
+          onWeightChanged: (weight) => BlocProvider.of<DogProfileBloc>(
+            context,
+          ).add(DogWeightSet(weight: weight)),
+        ),
+      ],
+      state: state,
+    );
+  }
+
+  Widget buildDogActivityStep(BuildContext context, DogProfileState state) {
+    return DogProfileWizardStep(
+      title: '¿Cuál es el nivel de actividad de ${state.dogProfile?.name}?',
+      content: [
+        ProfileRowSelectorWidget(
+          options: [
+            ProfileRowSelectorOption(
+              option: DogActivity.low,
+              label: 'low',
+              description:
+                  'Perro alfombra: paseos diarios de menos de 1h. Lo que más le gusta es echarse una buena siesta  y estar bien tranquilito.',
+              asset: 'dog_activity_low.png',
+            ),
+            ProfileRowSelectorOption(
+              option: DogActivity.medium,
+              label: 'medium',
+              description:
+                  'Perro zen: paseos diarios de 1 a 2h. Sabe disfrutar de buenas caminatas, pero también sabe cuándo descansar.',
+              asset: 'dog_activity_medium.png',
+            ),
+            ProfileRowSelectorOption(
+              option: DogActivity.high,
+              label: 'high',
+              description:
+                  'Perro terremoto: paseos diarios de más de 2h. ¡No veas qué torbellino de energía!',
+              asset: 'dog_activity_high.png',
+            ),
+          ],
+          onSelected: (activity) => BlocProvider.of<DogProfileBloc>(
+            context,
+          ).add(DogActivitySet(activity: activity)),
+          selected: state.dogProfile?.activity,
         ),
       ],
       state: state,

@@ -11,7 +11,8 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     on<DogSterilizedSet>(onDogSterilizedSet);
     on<DogBirthMonthSelected>(onDogBirthMonthSelected);
     on<DogBirthYearSelected>(onDogBirthYearSelected);
-    on<DogSizeAndWeightSet>(onDogSizeAndWeightSet);
+    on<DogSizeSet>(onDogSizeSet);
+    on<DogWeightSet>(onDogWeightSet);
     on<DogActivitySet>(onDogActivitySet);
     on<DogHasIllnessSet>(onDogHasIllnessSet);
     on<DogGastronomySet>(onDogGastronomySet);
@@ -82,16 +83,16 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     );
   }
 
-  void onDogSizeAndWeightSet(
-    DogSizeAndWeightSet event,
-    Emitter<DogProfileState> emit,
-  ) {
+  void onDogSizeSet(DogSizeSet event, Emitter<DogProfileState> emit) {
+    emit(
+      state.copyWith(dogProfile: state.dogProfile?.copyWith(size: event.size)),
+    );
+  }
+
+  void onDogWeightSet(DogWeightSet event, Emitter<DogProfileState> emit) {
     emit(
       state.copyWith(
-        dogProfile: state.dogProfile?.copyWith(
-          size: event.size,
-          weight: event.weight,
-        ),
+        dogProfile: state.dogProfile?.copyWith(weight: event.weight),
       ),
     );
   }

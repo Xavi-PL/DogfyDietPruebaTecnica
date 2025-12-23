@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DogProfileWizardStep extends StatelessWidget {
-  final String emoji;
+  final String? emoji;
   final String title;
   final List<Widget> content;
   final DogProfileState state;
@@ -15,7 +15,7 @@ class DogProfileWizardStep extends StatelessWidget {
 
   const DogProfileWizardStep({
     super.key,
-    required this.emoji,
+    this.emoji,
     required this.title,
     required this.content,
     required this.state,
@@ -34,8 +34,8 @@ class DogProfileWizardStep extends StatelessWidget {
               shrinkWrap: true,
               children: [
                 SizedBox(height: 75),
-                ProfileStepIconWidget(emoji: emoji),
-                SizedBox(height: 30),
+                if (emoji != null) ProfileStepIconWidget(emoji: emoji!),
+                if (emoji != null) SizedBox(height: 30),
                 Center(
                   child: Text(title, style: const TextStyle(fontSize: 20)),
                 ),
@@ -54,6 +54,7 @@ class DogProfileWizardStep extends StatelessWidget {
               ],
             ),
           ),
+          SizedBox(height: 16),
           ProfileStepNextButtonWidget(onPressed: () => validateStep(context)),
         ],
       ),

@@ -53,6 +53,12 @@ class DogProfileState {
         return dogProfile?.name != null;
       case 2:
         return dogProfile?.sex != null && dogProfile?.sterilized != null;
+      case 3:
+        return dogProfile?.birthMonth != null && dogProfile?.birthYear != null;
+      case 4:
+        return dogProfile?.size != null && dogProfile?.weight != null;
+      case 5:
+        return dogProfile?.activity != null;
       default:
         return false;
     }
