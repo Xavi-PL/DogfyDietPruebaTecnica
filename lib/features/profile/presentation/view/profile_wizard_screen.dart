@@ -74,6 +74,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
       buildDogSizeAndWeightStep(context, state),
       buildDogActivityStep(context, state),
       buildDogIllnessesStep(context, state),
+      buildDogGatronomicStep(context, state),
     ];
   }
 
@@ -295,6 +296,44 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
           onOptionSelected: (option) => BlocProvider.of<DogProfileBloc>(
             context,
           ).add(DogHasIllnessSet(hasIllness: option!)),
+        ),
+      ],
+      state: state,
+    );
+  }
+
+  Widget buildDogGatronomicStep(BuildContext context, DogProfileState state) {
+    return DogProfileWizardStep(
+      title: '¿Qué crítico gastronómico es tu perro?',
+      content: [
+        ProfileRowSelectorWidget(
+          options: [
+            ProfileRowSelectorOption(
+              option: DogGastronomy.selective,
+              label: 'selective',
+              description:
+                  'El selectivo: es de paladar exigente, suele costarle terminar su ración y se cansa de la comida (verás qué cambio cuando pruebe Dogfy)',
+              asset: 'dog_gastronomy_selective.png',
+            ),
+            ProfileRowSelectorOption(
+              option: DogGastronomy.gourmet,
+              label: 'gourmet',
+              description:
+                  'El gourmet: le encanta probar nuevos sabores, pero no se conforma con cualquier cosa',
+              asset: 'dog_gastronomy_gourmet.png',
+            ),
+            ProfileRowSelectorOption(
+              option: DogGastronomy.none,
+              label: 'none',
+              description:
+                  'El glotón: devora todo tipo de comida como si no fuera a probar bocado nunca más',
+              asset: 'dog_gastronomy_none.png',
+            ),
+          ],
+          onSelected: (gastronomy) => BlocProvider.of<DogProfileBloc>(
+            context,
+          ).add(DogGastronomySet(gastronomy: gastronomy)),
+          selected: state.dogProfile?.gastronomy,
         ),
       ],
       state: state,
