@@ -33,15 +33,19 @@ class DogProfileWizardStep extends StatelessWidget {
             child: ListView(
               shrinkWrap: true,
               children: [
-                SizedBox(height: 75),
+                SizedBox(height: 40),
                 if (emoji != null) ProfileStepIconWidget(emoji: emoji!),
-                if (emoji != null) SizedBox(height: 30),
+                if (emoji != null) SizedBox(height: 32),
                 Center(
-                  child: Text(title, style: const TextStyle(fontSize: 20)),
+                  child: Text(
+                    title,
+                    style: const TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 16),
                 ...content,
-                if (description != null) SizedBox(height: 40),
+                if (description != null) SizedBox(height: 16),
                 if (description != null)
                   Container(
                     padding: EdgeInsets.all(16),

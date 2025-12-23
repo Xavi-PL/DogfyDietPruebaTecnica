@@ -73,7 +73,9 @@ class ProfileRowSelectorItemWidget<T> extends StatelessWidget {
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: isSelected ? Color(0xffffd44a) : Colors.transparent,
+              color: isSelected
+                  ? Color(0xffffd44a)
+                  : Colors.black.withValues(alpha: 0.1),
             ),
           ),
           child: Row(

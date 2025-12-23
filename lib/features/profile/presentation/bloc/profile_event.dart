@@ -73,9 +73,24 @@ class DogGastronomySet extends DogProfileEvent {
 }
 
 // Last step of the form.
-class DogOwnerSet extends DogProfileEvent {
-  final Owner owner;
-  DogOwnerSet({required this.owner});
+class DogOwnerNameSet extends DogProfileEvent {
+  final String ownerName;
+  DogOwnerNameSet({required this.ownerName});
+}
+
+class DogOwnerPhoneSet extends DogProfileEvent {
+  final String ownerPhone;
+  DogOwnerPhoneSet({required this.ownerPhone});
+}
+
+class DogOwnerEmailSet extends DogProfileEvent {
+  final String ownerEmail;
+  DogOwnerEmailSet({required this.ownerEmail});
+}
+
+class DogOwnerAddressSet extends DogProfileEvent {
+  final String ownerAddress;
+  DogOwnerAddressSet({required this.ownerAddress});
 }
 
 class NextStep extends DogProfileEvent {}

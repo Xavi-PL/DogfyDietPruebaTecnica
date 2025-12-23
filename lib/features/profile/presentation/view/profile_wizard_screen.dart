@@ -1,4 +1,5 @@
 import 'package:dogfy_diet_prueba_tecnica/core/utils/date_utilities.dart';
+import 'package:dogfy_diet_prueba_tecnica/core/utils/input_utilities.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_profile.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
@@ -6,6 +7,7 @@ import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/pro
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/view/profile_wizard_step.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_breed_selector_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_date_dropdown_widget.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_input_text_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_more_than_one_dog_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_name_input_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_segmented_selector_widget.dart';
@@ -27,7 +29,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = PageController(initialPage: 7);
+    _controller = PageController(initialPage: 0);
   }
 
   @override
@@ -75,6 +77,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
       buildDogActivityStep(context, state),
       buildDogIllnessesStep(context, state),
       buildDogGatronomicStep(context, state),
+      buildOwnerStep(context, state),
     ];
   }
 
@@ -336,6 +339,97 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
           selected: state.dogProfile?.gastronomy,
         ),
       ],
+      state: state,
+    );
+  }
+
+  Widget buildOwnerStep(BuildContext context, DogProfileState state) {
+    return DogProfileWizardStep(
+      emoji: '👍',
+      title:
+          '¡El menú especial para ${state.dogProfile?.name} está casi listo!',
+      content: [
+        ProfileInputTextWidget(
+          icon: Icons.person,
+          onChanged: (ownerName) => BlocProvider.of<DogProfileBloc>(
+            context,
+          ).add(DogOwnerNameSet(ownerName: ownerName)),
+          label: 'Nombre',
+          keyboardType: TextInputType.name,
+          textCapitalization: TextCapitalization.words,
+        ),
+        SizedBox(height: 12),
+        ProfileInputTextWidget(
+          icon: Icons.email,
+          onChanged: (ownerEmail) => BlocProvider.of<DogProfileBloc>(
+            context,
+          ).add(DogOwnerEmailSet(ownerEmail: ownerEmail)),
+          label: 'Email',
+          keyboardType: TextInputType.emailAddress,
+          inputFormatters: InputUtilities.emailInputFormatters(),
+        ),
+        SizedBox(height: 12),
+        Row(
+          children: [
+            Flexible(
+              flex: 2,
+              child: DropdownMenu(
+                dropdownMenuEntries: [
+                  DropdownMenuEntry(value: '+34', label: 'ES'),
+                  DropdownMenuEntry(value: '+33', label: 'FR'),
+                  DropdownMenuEntry(value: '+41', label: 'IT'),
+                  DropdownMenuEntry(value: '+49', label: 'GE'),
+                ],
+              ),
+            ),
+            SizedBox(width: 12),
+            Expanded(
+              flex: 5,
+              child: ProfileInputTextWidget(
+                onChanged: (ownerPhone) => BlocProvider.of<DogProfileBloc>(
+                  context,
+                ).add(DogOwnerPhoneSet(ownerPhone: ownerPhone)),
+                label: 'Teléfono',
+                keyboardType: TextInputType.phone,
+                inputFormatters: InputUtilities.phoneInputFormatters(),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: ProfileInputTextWidget(
+                onChanged: (ownerAddress) => BlocProvider.of<DogProfileBloc>(
+                  context,
+                ).add(DogOwnerAddressSet(ownerAddress: ownerAddress)),
+                label: 'Dirección',
+                keyboardType: TextInputType.streetAddress,
+              ),
+            ),
+            SizedBox(width: 12),
+            SizedBox(
+              width: 50,
+              height: 50,
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                icon: Icon(Icons.my_location_rounded),
+                onPressed: () {},
+                style: ButtonStyle(
+                  shape: WidgetStatePropertyAll(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+      description:
+          'Al continuar, se guardará tu proceso y estarás aceptando los términos y condiciones y la política de privacidad para recibir las mejores recomendaciones sobre alimentación.',
       state: state,
     );
   }

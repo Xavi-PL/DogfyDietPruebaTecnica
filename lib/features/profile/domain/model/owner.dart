@@ -8,4 +8,18 @@ class Owner {
   final String? address;
 
   const Owner({this.name, this.email, this.phone, this.address});
+
+  Owner copyWith({
+    String? name,
+    String? email,
+    String? phone,
+    String? address,
+  }) {
+    return Owner(
+      name: name ?? this.name,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      address: address ?? this.address,
+    );
+  }
 }
