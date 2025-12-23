@@ -1,4 +1,3 @@
-import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/breed.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_bloc.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_event.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_state.dart';
@@ -15,37 +14,78 @@ class DogProfileWizardScreen extends StatefulWidget {
 }
 
 class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
+  late PageController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = PageController(initialPage: 0);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => DogProfileBloc(),
-      child: BlocBuilder<DogProfileBloc, DogProfileState>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('Dogfy Diet')),
-            backgroundColor: Colors.white,
-            body: PageView(children: buildSteps(state)),
+      child: BlocListener<DogProfileBloc, DogProfileState>(
+        listenWhen: (prev, next) => prev.currentStep != next.currentStep,
+        listener: (context, state) {
+          _controller.animateToPage(
+            state.currentStep,
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeOut,
           );
         },
+        child: BlocBuilder<DogProfileBloc, DogProfileState>(
+          builder: (context, state) {
+            return Scaffold(
+              appBar: AppBar(title: const Text('Dogfy Diet')),
+              backgroundColor: Colors.white,
+              body: PageView(
+                controller: _controller,
+                children: buildSteps(context, state),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
 
-  List<Widget> buildSteps(DogProfileState state) {
-    return [buildDogBreedStep(state)];
+  List<Widget> buildSteps(BuildContext context, DogProfileState state) {
+    return [
+      buildDogBreedStep(context, state),
+      buildDogNameStep(context, state),
+    ];
   }
 
-  Widget buildDogBreedStep(DogProfileState state) {
+  Widget buildDogBreedStep(BuildContext context, DogProfileState state) {
     return DogProfileWizardStep(
       emoji: '🐶',
+      state: state,
       title: '¿Cuál es la raza de tu perrete?',
       content: [
         ProfileBreedSelectorWidget(
-          onBreedSelected: (breed) =>
-              context.read<DogProfileBloc>().add(BreedSelected(breed: breed)),
+          onBreedSelected: (breed) => BlocProvider.of<DogProfileBloc>(
+            context,
+          ).add(BreedSelected(breed: breed)),
           availableBreeds: state.availableBreeds,
         ),
       ],
+    );
+  }
+
+  Widget buildDogNameStep(BuildContext context, DogProfileState state) {
+    return DogProfileWizardStep(
+      emoji: '✏️',
+      state: state,
+      title: '¿Cómo se llama tu perrete?',
+      content: [],
     );
   }
 }

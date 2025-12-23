@@ -60,3 +60,7 @@ class DogOwnerSet extends DogProfileEvent {
   final Owner owner;
   DogOwnerSet({required this.owner});
 }
+
+class NextStep extends DogProfileEvent {}
+
+class PreviousStep extends DogProfileEvent {}

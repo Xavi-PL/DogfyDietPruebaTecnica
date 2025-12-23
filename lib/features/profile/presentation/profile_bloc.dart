@@ -14,6 +14,8 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     on<DogHasIllnessSet>(onDogHasIllnessSet);
     on<DogGastronomySet>(onDogGastronomySet);
     on<DogOwnerSet>(onDogOwnerSet);
+    on<NextStep>(onNextStep);
+    on<PreviousStep>(onPreviousStep);
   }
 
   void onBreedSelected(BreedSelected event, Emitter<DogProfileState> emit) {
@@ -80,5 +82,13 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
 
   void onDogOwnerSet(DogOwnerSet event, Emitter<DogProfileState> emit) {
     emit(state.copyWith(dogProfile: DogProfile(owner: event.owner)));
+  }
+
+  void onNextStep(NextStep event, Emitter<DogProfileState> emit) {
+    emit(state.copyWith(currentStep: state.currentStep + 1));
+  }
+
+  void onPreviousStep(PreviousStep event, Emitter<DogProfileState> emit) {
+    emit(state.copyWith(currentStep: state.currentStep - 1));
   }
 }

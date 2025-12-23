@@ -1,17 +1,23 @@
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_bloc.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_event.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_state.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_step_icon_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_step_next_button_widget.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DogProfileWizardStep extends StatelessWidget {
   final String emoji;
   final String title;
   final List<Widget> content;
+  final DogProfileState state;
 
   const DogProfileWizardStep({
     super.key,
     required this.emoji,
     required this.title,
     required this.content,
+    required this.state,
   });
 
   @override
@@ -35,9 +41,15 @@ class DogProfileWizardStep extends StatelessWidget {
               ],
             ),
           ),
-          ProfileStepNextButtonWidget(onPressed: () {}),
+          ProfileStepNextButtonWidget(onPressed: () => validateStep(context)),
         ],
       ),
     );
+  }
+
+  void validateStep(BuildContext context) {
+    if (state.isStepValid()) {
+      BlocProvider.of<DogProfileBloc>(context).add(NextStep());
+    }
   }
 }
