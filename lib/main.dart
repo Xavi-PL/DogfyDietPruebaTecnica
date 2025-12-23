@@ -1,3 +1,4 @@
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_wizard_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,10 +12,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: Container(),
+      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
+      home: DogProfileWizardScreen(),
     );
   }
 }

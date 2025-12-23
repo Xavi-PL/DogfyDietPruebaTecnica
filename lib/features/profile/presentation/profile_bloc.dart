@@ -1,6 +1,6 @@
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_profile.dart';
-import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/dog_profile_event.dart';
-import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/dog_profile_state.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_event.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
