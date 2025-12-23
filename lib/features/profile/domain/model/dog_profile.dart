@@ -12,7 +12,7 @@ enum DogGastronomy { none, selective, gourmet }
 // Dog breed data should be defined before saving it as draft. That's the first step
 
 class DogProfile {
-  final Breed breed;
+  final Breed? breed;
 
   final String? name;
 
@@ -34,7 +34,7 @@ class DogProfile {
   final Owner? owner;
 
   DogProfile({
-    required this.breed,
+    this.breed,
     this.name,
     this.sex,
     this.sterilized,
