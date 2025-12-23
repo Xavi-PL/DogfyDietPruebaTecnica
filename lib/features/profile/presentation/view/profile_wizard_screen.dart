@@ -27,7 +27,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = PageController(initialPage: 0);
+    _controller = PageController(initialPage: 7);
   }
 
   @override
@@ -73,6 +73,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
       buildDogBirthDateStep(context, state),
       buildDogSizeAndWeightStep(context, state),
       buildDogActivityStep(context, state),
+      buildDogIllnessesStep(context, state),
     ];
   }
 
@@ -272,6 +273,28 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
             context,
           ).add(DogActivitySet(activity: activity)),
           selected: state.dogProfile?.activity,
+        ),
+      ],
+      state: state,
+    );
+  }
+
+  Widget buildDogIllnessesStep(BuildContext context, DogProfileState state) {
+    return DogProfileWizardStep(
+      emoji: '❤️‍🩹',
+      title: '¿Tiene ${state.dogProfile?.name} alguna patología?',
+      description:
+          'Cada perro es un mundo. ¡No te preocupes! Adaptaremos nuestro menú a su caso, siempre que sea posible. Si la patología de tu perro no aparece en el formulario, envía un correo a nutricionistas@dogfydiet.com.',
+      content: [
+        ProfileSegmentedSelectorWidget(
+          selected: state.dogProfile?.hasIllness,
+          options: [
+            ProfileSegmentedSelectorOption(value: true, label: 'Sí'),
+            ProfileSegmentedSelectorOption(value: false, label: 'No'),
+          ],
+          onOptionSelected: (option) => BlocProvider.of<DogProfileBloc>(
+            context,
+          ).add(DogHasIllnessSet(hasIllness: option!)),
         ),
       ],
       state: state,
