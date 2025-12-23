@@ -42,14 +42,15 @@ class DogProfileWizardStep extends StatelessWidget {
                 SizedBox(height: 20),
                 ...content,
                 if (description != null) SizedBox(height: 40),
-                Container(
-                  padding: EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Color(0xffedf8f8),
+                if (description != null)
+                  Container(
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Color(0xffedf8f8),
+                    ),
+                    child: Text(description!, style: TextStyle(fontSize: 16)),
                   ),
-                  child: Text(description!, style: TextStyle(fontSize: 16)),
-                ),
               ],
             ),
           ),

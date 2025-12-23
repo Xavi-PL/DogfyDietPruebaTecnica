@@ -8,7 +8,8 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     on<BreedSelected>(onBreedSelected);
     on<DogNameSet>(onDogNameSet);
     on<MoreThanOneDogTapped>(onMoreThanOneDogTapped);
-    on<DogSexAndSterilizedSet>(onDogSexAndSterilizedSet);
+    on<DogSexSet>(onDogSexSet);
+    on<DogSterilizedSet>(onDogSterilizedSet);
     on<DogBirthDateSelected>(onDogBirthDateSelected);
     on<DogSizeAndWeightSet>(onDogSizeAndWeightSet);
     on<DogActivitySet>(onDogActivitySet);
@@ -20,11 +21,19 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
   }
 
   void onBreedSelected(BreedSelected event, Emitter<DogProfileState> emit) {
-    emit(state.copyWith(dogProfile: DogProfile(breed: event.breed)));
+    emit(
+      state.copyWith(
+        dogProfile: state.dogProfile?.copyWith(breed: event.breed),
+      ),
+    );
   }
 
   void onDogNameSet(DogNameSet event, Emitter<DogProfileState> emit) {
-    emit(state.copyWith(dogProfile: DogProfile(name: event.dogName)));
+    emit(
+      state.copyWith(
+        dogProfile: state.dogProfile?.copyWith(name: event.dogName),
+      ),
+    );
   }
 
   void onMoreThanOneDogTapped(
@@ -34,13 +43,19 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     emit(state.copyWith(moreThanOneDog: true));
   }
 
-  void onDogSexAndSterilizedSet(
-    DogSexAndSterilizedSet event,
+  void onDogSexSet(DogSexSet event, Emitter<DogProfileState> emit) {
+    emit(
+      state.copyWith(dogProfile: state.dogProfile?.copyWith(sex: event.sex)),
+    );
+  }
+
+  void onDogSterilizedSet(
+    DogSterilizedSet event,
     Emitter<DogProfileState> emit,
   ) {
     emit(
       state.copyWith(
-        dogProfile: DogProfile(sex: event.sex, sterilized: event.sterilized),
+        dogProfile: state.dogProfile?.copyWith(sterilized: event.sterilized),
       ),
     );
   }
@@ -51,7 +66,7 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
   ) {
     emit(
       state.copyWith(
-        dogProfile: DogProfile(
+        dogProfile: state.dogProfile?.copyWith(
           birthMonth: event.birthMonth,
           birthYear: event.birthYear,
         ),
@@ -65,31 +80,50 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
   ) {
     emit(
       state.copyWith(
-        dogProfile: DogProfile(size: event.size, weight: event.weight),
+        dogProfile: state.dogProfile?.copyWith(
+          size: event.size,
+          weight: event.weight,
+        ),
       ),
     );
   }
 
   void onDogActivitySet(DogActivitySet event, Emitter<DogProfileState> emit) {
-    emit(state.copyWith(dogProfile: DogProfile(activity: event.activity)));
+    emit(
+      state.copyWith(
+        dogProfile: state.dogProfile?.copyWith(activity: event.activity),
+      ),
+    );
   }
 
   void onDogHasIllnessSet(
     DogHasIllnessSet event,
     Emitter<DogProfileState> emit,
   ) {
-    emit(state.copyWith(dogProfile: DogProfile(hasIllness: event.hasIllness)));
+    emit(
+      state.copyWith(
+        dogProfile: state.dogProfile?.copyWith(hasIllness: event.hasIllness),
+      ),
+    );
   }
 
   void onDogGastronomySet(
     DogGastronomySet event,
     Emitter<DogProfileState> emit,
   ) {
-    emit(state.copyWith(dogProfile: DogProfile(gastronomy: event.gastronomy)));
+    emit(
+      state.copyWith(
+        dogProfile: state.dogProfile?.copyWith(gastronomy: event.gastronomy),
+      ),
+    );
   }
 
   void onDogOwnerSet(DogOwnerSet event, Emitter<DogProfileState> emit) {
-    emit(state.copyWith(dogProfile: DogProfile(owner: event.owner)));
+    emit(
+      state.copyWith(
+        dogProfile: state.dogProfile?.copyWith(owner: event.owner),
+      ),
+    );
   }
 
   void onNextStep(NextStep event, Emitter<DogProfileState> emit) {

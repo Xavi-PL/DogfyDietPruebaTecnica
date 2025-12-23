@@ -47,4 +47,34 @@ class DogProfile {
     this.gastronomy,
     this.owner,
   });
+
+  DogProfile copyWith({
+    Breed? breed,
+    String? name,
+    DogSex? sex,
+    bool? sterilized,
+    int? birthMonth,
+    int? birthYear,
+    DogSize? size,
+    int? weight,
+    DogActivity? activity,
+    bool? hasIllness,
+    DogGastronomy? gastronomy,
+    Owner? owner,
+  }) {
+    return DogProfile(
+      breed: breed ?? this.breed,
+      name: name ?? this.name,
+      sex: sex ?? this.sex,
+      sterilized: sterilized ?? this.sterilized,
+      birthMonth: birthMonth ?? this.birthMonth,
+      birthYear: birthYear ?? this.birthYear,
+      size: size ?? this.size,
+      weight: weight ?? this.weight,
+      activity: activity ?? this.activity,
+      hasIllness: hasIllness ?? this.hasIllness,
+      gastronomy: gastronomy ?? this.gastronomy,
+      owner: owner ?? this.owner,
+    );
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_profile.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_bloc.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_event.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_state.dart';
@@ -5,6 +6,7 @@ import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_breed_selector_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_more_than_one_dog_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_name_input_widget.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_segmented_selector_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +23,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = PageController(initialPage: 1);
+    _controller = PageController(initialPage: 0);
   }
 
   @override
@@ -63,6 +65,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
     return [
       buildDogBreedStep(context, state),
       buildDogNameStep(context, state),
+      buildDogGenderAndSterilizedStep(context, state),
     ];
   }
 
@@ -98,6 +101,57 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
         SizedBox(height: 20),
         ProfileMoreThanOneDogWidget(),
       ],
+    );
+  }
+
+  Widget buildDogGenderAndSterilizedStep(
+    BuildContext context,
+    DogProfileState state,
+  ) {
+    return DogProfileWizardStep(
+      emoji: '🧐',
+      title: '¡Queremos conocer a ${state.dogProfile?.name}!',
+      description:
+          '¿Por qué es importante? Después de la esterilización, se requieren ajustes en la ración, ya que el perro suele tener menor gasto calórico.',
+      content: [
+        ProfileSegmentedSelectorWidget(
+          selected: state.dogProfile?.sex,
+          options: [
+            ProfileSegmentedSelectorOption(value: DogSex.male, label: 'Macho'),
+            ProfileSegmentedSelectorOption(
+              value: DogSex.female,
+              label: 'Hembra',
+            ),
+          ],
+          onOptionSelected: (option) => BlocProvider.of<DogProfileBloc>(
+            context,
+          ).add(DogSexSet(sex: option!)),
+        ),
+        SizedBox(height: 30),
+        Center(
+          child: Text(
+            state.dogProfile?.sex != null
+                ? state.dogProfile!.sex == DogSex.male
+                      ? '¿Está esterilizado?'
+                      : '¿Está esterilizada?'
+                : '¿Está esterilizado/a?',
+            style: const TextStyle(fontSize: 20),
+          ),
+        ),
+        SizedBox(height: 15),
+
+        ProfileSegmentedSelectorWidget(
+          selected: state.dogProfile?.sterilized,
+          options: [
+            ProfileSegmentedSelectorOption(value: true, label: 'Sí'),
+            ProfileSegmentedSelectorOption(value: false, label: 'No'),
+          ],
+          onOptionSelected: (option) => BlocProvider.of<DogProfileBloc>(
+            context,
+          ).add(DogSterilizedSet(sterilized: option!)),
+        ),
+      ],
+      state: state,
     );
   }
 }

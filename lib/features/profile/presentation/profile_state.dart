@@ -15,6 +15,7 @@ class DogProfileState {
   });
 
   factory DogProfileState.initial() => DogProfileState(
+    dogProfile: DogProfile(),
     currentStep: 0,
     availableBreeds: const [
       Breed(name: 'Labrador', id: 1),
@@ -50,6 +51,8 @@ class DogProfileState {
         return dogProfile?.breed != null;
       case 1:
         return dogProfile?.name != null;
+      case 2:
+        return dogProfile?.sex != null && dogProfile?.sterilized != null;
       default:
         return false;
     }
