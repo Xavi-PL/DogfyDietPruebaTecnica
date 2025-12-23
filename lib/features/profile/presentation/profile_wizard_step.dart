@@ -11,6 +11,7 @@ class DogProfileWizardStep extends StatelessWidget {
   final String title;
   final List<Widget> content;
   final DogProfileState state;
+  final String? description;
 
   const DogProfileWizardStep({
     super.key,
@@ -18,6 +19,7 @@ class DogProfileWizardStep extends StatelessWidget {
     required this.title,
     required this.content,
     required this.state,
+    this.description,
   });
 
   @override
@@ -28,16 +30,26 @@ class DogProfileWizardStep extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
+            child: ListView(
+              shrinkWrap: true,
               children: [
                 SizedBox(height: 75),
                 ProfileStepIconWidget(emoji: emoji),
                 SizedBox(height: 30),
-                Text(title, style: const TextStyle(fontSize: 20)),
+                Center(
+                  child: Text(title, style: const TextStyle(fontSize: 20)),
+                ),
                 SizedBox(height: 20),
-                Column(children: content),
+                ...content,
+                if (description != null) SizedBox(height: 40),
+                Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: Color(0xffedf8f8),
+                  ),
+                  child: Text(description!, style: TextStyle(fontSize: 16)),
+                ),
               ],
             ),
           ),

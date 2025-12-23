@@ -5,10 +5,12 @@ class DogProfileState {
   final int currentStep;
   final List<Breed> availableBreeds;
   final DogProfile? dogProfile;
+  final bool moreThanOneDog;
 
   DogProfileState({
     required this.currentStep,
     this.availableBreeds = const [],
+    this.moreThanOneDog = false,
     this.dogProfile,
   });
 
@@ -32,11 +34,13 @@ class DogProfileState {
     int? currentStep,
     DogProfile? dogProfile,
     List<Breed>? availableBreeds,
+    bool? moreThanOneDog,
   }) {
     return DogProfileState(
       currentStep: currentStep ?? this.currentStep,
       dogProfile: dogProfile ?? this.dogProfile,
       availableBreeds: availableBreeds ?? this.availableBreeds,
+      moreThanOneDog: moreThanOneDog ?? this.moreThanOneDog,
     );
   }
 

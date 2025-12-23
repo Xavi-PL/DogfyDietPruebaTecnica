@@ -16,6 +16,8 @@ class DogNameSet extends DogProfileEvent {
   DogNameSet({required this.dogName});
 }
 
+class MoreThanOneDogTapped extends DogProfileEvent {}
+
 // Third step of the form.
 class DogSexAndSterilizedSet extends DogProfileEvent {
   final DogSex sex;

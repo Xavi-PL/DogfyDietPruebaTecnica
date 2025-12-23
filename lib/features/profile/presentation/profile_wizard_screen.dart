@@ -3,6 +3,8 @@ import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_state.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_wizard_step.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_breed_selector_widget.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_more_than_one_dog_widget.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_name_input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,7 +21,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = PageController(initialPage: 0);
+    _controller = PageController(initialPage: 1);
   }
 
   @override
@@ -85,7 +87,17 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
       emoji: '✏️',
       state: state,
       title: '¿Cómo se llama tu perrete?',
-      content: [],
+      description:
+          '¡Qué emoción! Estás a punto de mejorar la vida de tu perrete a través de una alimentación 100% natural.',
+      content: [
+        ProfileNameInputWidget(
+          onNameChanged: (dogName) => BlocProvider.of<DogProfileBloc>(
+            context,
+          ).add(DogNameSet(dogName: dogName)),
+        ),
+        SizedBox(height: 20),
+        ProfileMoreThanOneDogWidget(),
+      ],
     );
   }
 }

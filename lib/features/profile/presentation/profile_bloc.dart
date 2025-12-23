@@ -7,6 +7,7 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
   DogProfileBloc() : super(DogProfileState.initial()) {
     on<BreedSelected>(onBreedSelected);
     on<DogNameSet>(onDogNameSet);
+    on<MoreThanOneDogTapped>(onMoreThanOneDogTapped);
     on<DogSexAndSterilizedSet>(onDogSexAndSterilizedSet);
     on<DogBirthDateSelected>(onDogBirthDateSelected);
     on<DogSizeAndWeightSet>(onDogSizeAndWeightSet);
@@ -24,6 +25,13 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
 
   void onDogNameSet(DogNameSet event, Emitter<DogProfileState> emit) {
     emit(state.copyWith(dogProfile: DogProfile(name: event.dogName)));
+  }
+
+  void onMoreThanOneDogTapped(
+    MoreThanOneDogTapped event,
+    Emitter<DogProfileState> emit,
+  ) {
+    emit(state.copyWith(moreThanOneDog: true));
   }
 
   void onDogSexAndSterilizedSet(
