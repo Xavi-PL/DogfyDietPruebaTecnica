@@ -1,4 +1,4 @@
-import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_wizard_screen.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/view/profile_wizard_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

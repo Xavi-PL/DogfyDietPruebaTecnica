@@ -1,6 +1,6 @@
-import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_bloc.dart';
-import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_event.dart';
-import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_state.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_state.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_step_icon_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_step_next_button_widget.dart';
 import 'package:flutter/widgets.dart';

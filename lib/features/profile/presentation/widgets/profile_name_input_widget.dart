@@ -1,5 +1,5 @@
-import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_bloc.dart';
-import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_event.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

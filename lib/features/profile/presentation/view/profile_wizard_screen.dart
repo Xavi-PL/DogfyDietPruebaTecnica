@@ -1,8 +1,8 @@
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_profile.dart';
-import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_bloc.dart';
-import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_event.dart';
-import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_state.dart';
-import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/profile_wizard_step.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_state.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/view/profile_wizard_step.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_breed_selector_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_more_than_one_dog_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_name_input_widget.dart';
