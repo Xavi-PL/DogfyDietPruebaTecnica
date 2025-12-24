@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProfileDateDropdownWidget<T> extends StatelessWidget {
+  final T? selectedValue;
   final List<T> options;
   final Function(T) onDateSelected;
   final String? hint;
@@ -8,29 +9,36 @@ class ProfileDateDropdownWidget<T> extends StatelessWidget {
     super.key,
     required this.options,
     required this.onDateSelected,
+    this.selectedValue,
     this.hint,
   });
 
   @override
   Widget build(BuildContext context) {
-    return DropdownMenu(
-      hintText: hint,
-      width: double.infinity,
-      inputDecorationTheme: const InputDecorationTheme(
-        border: OutlineInputBorder(),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(8),
       ),
-      menuStyle: MenuStyle(
-        elevation: WidgetStatePropertyAll(5),
-        alignment: Alignment.bottomLeft, // forces menu below
+      child: DropdownButton<T>(
+        value: selectedValue,
+        isExpanded: true,
+        hint: Text(hint ?? ''),
+        underline: const SizedBox(),
+        menuMaxHeight: 200,
+        items: options.map((option) {
+          return DropdownMenuItem(
+            value: option,
+            child: Text(option.toString()),
+          );
+        }).toList(),
+        onChanged: (option) {
+          if (option != null) {
+            onDateSelected(option);
+          }
+        },
       ),
-      alignmentOffset: const Offset(0, 8),
-      dropdownMenuEntries: options
-          .map(
-            (option) =>
-                DropdownMenuEntry(value: option, label: option.toString()),
-          )
-          .toList(),
-      onSelected: (option) => onDateSelected(option!),
     );
   }
 }

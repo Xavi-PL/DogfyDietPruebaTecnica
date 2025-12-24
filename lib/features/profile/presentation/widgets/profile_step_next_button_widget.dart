@@ -11,14 +11,21 @@ class ProfileStepNextButtonWidget extends StatelessWidget {
       borderRadius: BorderRadius.all(Radius.circular(360)),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
-        onTap: onPressed,
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          onPressed();
+        },
         child: SizedBox(
           height: 70,
           width: double.infinity,
           child: Center(
             child: Text(
               "Continuar",
-              style: TextStyle(color: Colors.white, fontSize: 18),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ),

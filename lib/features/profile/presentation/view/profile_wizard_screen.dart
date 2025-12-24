@@ -1,6 +1,7 @@
 import 'package:dogfy_diet_prueba_tecnica/core/utils/date_utilities.dart';
 import 'package:dogfy_diet_prueba_tecnica/core/utils/input_utilities.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_profile.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/owner.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_state.dart';
@@ -53,12 +54,39 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
         },
         child: BlocBuilder<DogProfileBloc, DogProfileState>(
           builder: (context, state) {
+            List<Widget> steps = buildSteps(context, state);
+
             return Scaffold(
-              appBar: AppBar(title: const Text('Dogfy Diet')),
-              backgroundColor: Colors.white,
-              body: PageView(
-                controller: _controller,
-                children: buildSteps(context, state),
+              appBar: AppBar(
+                title: LinearProgressIndicator(
+                  borderRadius: BorderRadius.circular(360),
+                  value: (state.currentStep + 1) / steps.length,
+                  color: const Color(0xffffd44a),
+                ),
+                leading: state.currentStep > 0
+                    ? IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () {
+                          BlocProvider.of<DogProfileBloc>(
+                            context,
+                          ).add(PreviousStep());
+                          _controller.previousPage(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeOut,
+                          );
+                        },
+                      )
+                    : null,
+              ),
+              body: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                child: PageView(controller: _controller, children: steps),
               ),
             );
           },
@@ -88,6 +116,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
       title: '¿Cuál es la raza de tu perrete?',
       content: [
         ProfileBreedSelectorWidget(
+          selectedBreed: state.dogProfile?.breed,
           onBreedSelected: (breed) => BlocProvider.of<DogProfileBloc>(
             context,
           ).add(BreedSelected(breed: breed)),
@@ -106,6 +135,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
           '¡Qué emoción! Estás a punto de mejorar la vida de tu perrete a través de una alimentación 100% natural.',
       content: [
         ProfileNameInputWidget(
+          name: state.dogProfile?.name ?? '',
           onNameChanged: (dogName) => BlocProvider.of<DogProfileBloc>(
             context,
           ).add(DogNameSet(dogName: dogName)),
@@ -174,6 +204,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
       content: [
         ProfileDateDropdownWidget(
           hint: 'Año',
+          selectedValue: state.dogProfile?.birthYear,
           options: List.generate(
             DateTime.now().year - 2006 + 1,
             (index) => index + 2006,
@@ -185,6 +216,9 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
         SizedBox(height: 16),
         ProfileDateDropdownWidget(
           hint: 'Mes',
+          selectedValue: DateUtilities.getMonthName(
+            state.dogProfile?.birthMonth,
+          ),
           options: DateUtilities.getMonthNames(),
           onDateSelected: (month) =>
               BlocProvider.of<DogProfileBloc>(context).add(
@@ -236,6 +270,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
         ),
         SizedBox(height: 40),
         ProfileWeightInputWidget(
+          currentWeight: state.dogProfile?.weight,
           onWeightChanged: (weight) => BlocProvider.of<DogProfileBloc>(
             context,
           ).add(DogWeightSet(weight: weight)),
@@ -350,6 +385,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
           '¡El menú especial para ${state.dogProfile?.name} está casi listo!',
       content: [
         ProfileInputTextWidget(
+          value: state.dogProfile?.owner?.name ?? '',
           icon: Icons.person,
           onChanged: (ownerName) => BlocProvider.of<DogProfileBloc>(
             context,
@@ -360,6 +396,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
         ),
         SizedBox(height: 12),
         ProfileInputTextWidget(
+          value: state.dogProfile?.owner?.email ?? '',
           icon: Icons.email,
           onChanged: (ownerEmail) => BlocProvider.of<DogProfileBloc>(
             context,
@@ -375,17 +412,21 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
               flex: 2,
               child: DropdownMenu(
                 dropdownMenuEntries: [
-                  DropdownMenuEntry(value: '+34', label: 'ES'),
-                  DropdownMenuEntry(value: '+33', label: 'FR'),
-                  DropdownMenuEntry(value: '+41', label: 'IT'),
-                  DropdownMenuEntry(value: '+49', label: 'GE'),
+                  DropdownMenuEntry(value: Country.es, label: 'ES'),
+                  DropdownMenuEntry(value: Country.fr, label: 'FR'),
+                  DropdownMenuEntry(value: Country.it, label: 'IT'),
+                  DropdownMenuEntry(value: Country.de, label: 'GE'),
                 ],
+                onSelected: (country) => BlocProvider.of<DogProfileBloc>(
+                  context,
+                ).add(DogOwnerCountrySet(ownerCountry: country!)),
               ),
             ),
             SizedBox(width: 12),
             Expanded(
               flex: 5,
               child: ProfileInputTextWidget(
+                value: state.dogProfile?.owner?.phone ?? '',
                 onChanged: (ownerPhone) => BlocProvider.of<DogProfileBloc>(
                   context,
                 ).add(DogOwnerPhoneSet(ownerPhone: ownerPhone)),
@@ -401,6 +442,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
           children: [
             Expanded(
               child: ProfileInputTextWidget(
+                value: state.dogProfile?.owner?.address ?? '',
                 onChanged: (ownerAddress) => BlocProvider.of<DogProfileBloc>(
                   context,
                 ).add(DogOwnerAddressSet(ownerAddress: ownerAddress)),

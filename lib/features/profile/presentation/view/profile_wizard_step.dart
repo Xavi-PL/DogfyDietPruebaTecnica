@@ -1,8 +1,10 @@
+import 'package:alert_info/alert_info.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_state.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_step_icon_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_step_next_button_widget.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,13 +41,16 @@ class DogProfileWizardStep extends StatelessWidget {
                 Center(
                   child: Text(
                     title,
-                    style: const TextStyle(fontSize: 20),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
                 SizedBox(height: 16),
                 ...content,
-                if (description != null) SizedBox(height: 16),
+                if (description != null) SizedBox(height: 32),
                 if (description != null)
                   Container(
                     padding: EdgeInsets.all(16),
@@ -53,7 +58,13 @@ class DogProfileWizardStep extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       color: Color(0xffedf8f8),
                     ),
-                    child: Text(description!, style: TextStyle(fontSize: 16)),
+                    child: Text(
+                      description!,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
                   ),
               ],
             ),
@@ -68,6 +79,15 @@ class DogProfileWizardStep extends StatelessWidget {
   void validateStep(BuildContext context) {
     if (state.isStepValid()) {
       BlocProvider.of<DogProfileBloc>(context).add(NextStep());
+    } else {
+      AlertInfo.show(
+        context: context,
+        padding: 96,
+        position: MessagePosition.bottom,
+        typeInfo: TypeInfo.error,
+        icon: Icons.error_rounded,
+        text: "Hay campos sin completar.",
+      );
     }
   }
 }

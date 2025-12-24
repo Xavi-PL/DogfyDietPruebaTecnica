@@ -14,4 +14,11 @@ class DateUtilities {
     final monthNames = getMonthNames();
     return monthNames.indexOf(month) + 1;
   }
+
+  static String? getMonthName(int? month) {
+    if (month == null) return null;
+
+    final monthNames = getMonthNames();
+    return monthNames[month - 1];
+  }
 }

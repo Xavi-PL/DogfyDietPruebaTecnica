@@ -5,9 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileNameInputWidget extends StatelessWidget {
+  final String name;
   final Function(String) onNameChanged;
 
-  const ProfileNameInputWidget({super.key, required this.onNameChanged});
+  const ProfileNameInputWidget({
+    super.key,
+    required this.onNameChanged,
+    required this.name,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +33,7 @@ class ProfileNameInputWidget extends StatelessWidget {
           SizedBox(width: 16),
           Expanded(
             child: ProfileInputTextWidget(
+              value: name,
               onChanged: onNameChanged,
               label: 'Mi perrhijo se llama...',
               keyboardType: TextInputType.name,

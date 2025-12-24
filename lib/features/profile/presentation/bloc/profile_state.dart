@@ -1,5 +1,6 @@
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/breed.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_profile.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/owner.dart';
 
 class DogProfileState {
   final int currentStep;
@@ -15,7 +16,7 @@ class DogProfileState {
   });
 
   factory DogProfileState.initial() => DogProfileState(
-    dogProfile: DogProfile(),
+    dogProfile: DogProfile(owner: Owner()),
     currentStep: 0,
     availableBreeds: const [
       Breed(name: 'Labrador', id: 1),

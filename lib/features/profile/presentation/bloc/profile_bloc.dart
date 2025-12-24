@@ -17,6 +17,7 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     on<DogHasIllnessSet>(onDogHasIllnessSet);
     on<DogGastronomySet>(onDogGastronomySet);
     on<DogOwnerNameSet>(onDogOwnerNameSet);
+    on<DogOwnerCountrySet>(onDogOwnerCountrySet);
     on<DogOwnerPhoneSet>(onDogOwnerPhoneSet);
     on<DogOwnerEmailSet>(onDogOwnerEmailSet);
     on<DogOwnerAddressSet>(onDogOwnerAddressSet);
@@ -135,6 +136,19 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
       state.copyWith(
         dogProfile: state.dogProfile?.copyWith(
           owner: state.dogProfile?.owner?.copyWith(name: event.ownerName),
+        ),
+      ),
+    );
+  }
+
+  void onDogOwnerCountrySet(
+    DogOwnerCountrySet event,
+    Emitter<DogProfileState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        dogProfile: state.dogProfile?.copyWith(
+          owner: state.dogProfile?.owner?.copyWith(country: event.ownerCountry),
         ),
       ),
     );

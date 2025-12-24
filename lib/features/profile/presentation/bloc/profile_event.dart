@@ -78,6 +78,11 @@ class DogOwnerNameSet extends DogProfileEvent {
   DogOwnerNameSet({required this.ownerName});
 }
 
+class DogOwnerCountrySet extends DogProfileEvent {
+  final Country ownerCountry;
+  DogOwnerCountrySet({required this.ownerCountry});
+}
+
 class DogOwnerPhoneSet extends DogProfileEvent {
   final String ownerPhone;
   DogOwnerPhoneSet({required this.ownerPhone});
