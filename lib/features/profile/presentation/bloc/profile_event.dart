@@ -117,3 +117,5 @@ class CreateDogProfileRequested extends DogProfileEvent {
   final DogProfile dogProfile;
   CreateDogProfileRequested({required this.dogProfile});
 }
+
+class ClearErrorMessage extends DogProfileEvent {}

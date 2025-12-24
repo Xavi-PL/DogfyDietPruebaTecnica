@@ -11,6 +11,7 @@ class DogProfileState {
   final bool moreThanOneDog;
   final bool isLoadingAddress;
   final bool isCreatingDogProfile;
+  final String errorMessage;
 
   DogProfileState({
     required this.currentStep,
@@ -20,6 +21,7 @@ class DogProfileState {
     this.dogProfile,
     this.isLoadingAddress = false,
     this.isCreatingDogProfile = false,
+    this.errorMessage = '',
   });
 
   factory DogProfileState.initial() => DogProfileState(
@@ -37,6 +39,7 @@ class DogProfileState {
     bool? moreThanOneDog,
     bool? isLoadingAddress,
     bool? isCreatingDogProfile,
+    String? errorMessage,
   }) {
     return DogProfileState(
       currentStep: currentStep ?? this.currentStep,
@@ -46,6 +49,7 @@ class DogProfileState {
       isLoadingAddress: isLoadingAddress ?? this.isLoadingAddress,
       isCreatingDogProfile: isCreatingDogProfile ?? this.isCreatingDogProfile,
       ready: ready ?? this.ready,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 

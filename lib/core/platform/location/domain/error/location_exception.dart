@@ -10,6 +10,11 @@ class LocationPermissionDenied extends LocationException {
   const LocationPermissionDenied() : super('Location permission denied');
 }
 
+class LocationPermissionDeniedForever extends LocationException {
+  const LocationPermissionDeniedForever()
+    : super('Location permission denied forever');
+}
+
 class LocationServicesDisabled extends LocationException {
   const LocationServicesDisabled() : super('Location services are disabled');
 }

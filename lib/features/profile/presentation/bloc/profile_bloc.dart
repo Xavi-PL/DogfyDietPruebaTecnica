@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dogfy_diet_prueba_tecnica/core/platform/location/domain/error/location_exception.dart';
 import 'package:dogfy_diet_prueba_tecnica/core/platform/location/domain/usecase/get_current_address.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_profile.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/clear_dog_profile_draft.dart';
@@ -54,6 +55,7 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     on<SaveDraftRequested>(onSaveDraftRequested);
     on<GetAddressEvent>(onGetAddressEvent);
     on<CreateDogProfileRequested>(onCreateDogProfileRequested);
+    on<ClearErrorMessage>(onClearErrorMessage);
 
     // Execute the profile started event when the bloc is initialized.
     add(ProfileStarted());
@@ -68,7 +70,10 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
 
     // Check if there's a profile draft saved.
     final hasDraft = await hasDogProfileDraft();
-    if (!hasDraft) return;
+    if (!hasDraft) {
+      add(ProfileReady());
+      return;
+    }
 
     // Load the draft.
     final cached = await loadDogProfileDraft();
@@ -308,7 +313,30 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
           add(DogOwnerAddressSet(ownerAddress: value!));
         })
         .onError((error, stackTrace) {
-          print(error);
+          if (error is LocationPermissionDeniedForever) {
+            emit(
+              state.copyWith(
+                errorMessage:
+                    'Para continuar, debes permitir el acceso a la ubicación desde la configuración de la app.',
+              ),
+            );
+          } else if (error is LocationPermissionDenied) {
+            emit(
+              state.copyWith(
+                errorMessage:
+                    'Debes permitir el acceso a la ubicación para obtener tu dirección automáticamente.',
+              ),
+            );
+          } else if (error is LocationServicesDisabled) {
+            emit(
+              state.copyWith(
+                errorMessage:
+                    'Para continuar, debes activar los servicios de ubicación del dispositivo.',
+              ),
+            );
+          } else {
+            emit(state.copyWith(errorMessage: error.toString()));
+          }
         });
     emit(state.copyWith(isLoadingAddress: false));
   }
@@ -322,8 +350,15 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
       error,
       stackTrace,
     ) {
-      print(error);
+      emit(state.copyWith(errorMessage: error.toString()));
     });
     emit(state.copyWith(isCreatingDogProfile: false));
+  }
+
+  void onClearErrorMessage(
+    ClearErrorMessage event,
+    Emitter<DogProfileState> emit,
+  ) {
+    emit(state.copyWith(errorMessage: ''));
   }
 }

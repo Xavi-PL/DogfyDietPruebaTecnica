@@ -1,3 +1,4 @@
+import 'package:alert_info/alert_info.dart';
 import 'package:dogfy_diet_prueba_tecnica/core/utils/date_utilities.dart';
 import 'package:dogfy_diet_prueba_tecnica/core/utils/input_utilities.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/di/profile_module.dart';
@@ -46,7 +47,9 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
     return BlocProvider(
       create: (context) => getIt<DogProfileBloc>(),
       child: BlocListener<DogProfileBloc, DogProfileState>(
-        listenWhen: (prev, next) => prev.currentStep != next.currentStep,
+        listenWhen: (prev, next) =>
+            prev.currentStep != next.currentStep ||
+            prev.errorMessage != next.errorMessage,
         listener: (context, state) {
           if (!_controller.hasClients) {
             return;
@@ -57,6 +60,18 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
             duration: const Duration(milliseconds: 250),
             curve: Curves.easeOut,
           );
+
+          if (state.errorMessage.isNotEmpty) {
+            AlertInfo.show(
+              context: context,
+              padding: 96,
+              position: MessagePosition.bottom,
+              typeInfo: TypeInfo.error,
+              icon: Icons.error_rounded,
+              text: state.errorMessage,
+            );
+            BlocProvider.of<DogProfileBloc>(context).add(ClearErrorMessage());
+          }
         },
         child: BlocBuilder<DogProfileBloc, DogProfileState>(
           builder: (context, state) {
@@ -430,13 +445,14 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
         Row(
           children: [
             Flexible(
-              flex: 2,
+              flex: 4,
               child: DropdownMenu(
+                hintText: "País",
                 dropdownMenuEntries: [
-                  DropdownMenuEntry(value: Country.es, label: 'ES'),
-                  DropdownMenuEntry(value: Country.fr, label: 'FR'),
-                  DropdownMenuEntry(value: Country.it, label: 'IT'),
-                  DropdownMenuEntry(value: Country.de, label: 'GE'),
+                  DropdownMenuEntry(value: Country.es, label: 'España'),
+                  DropdownMenuEntry(value: Country.fr, label: 'Francia'),
+                  DropdownMenuEntry(value: Country.it, label: 'Italia'),
+                  DropdownMenuEntry(value: Country.de, label: 'Alemania'),
                 ],
                 onSelected: (country) => BlocProvider.of<DogProfileBloc>(
                   context,
@@ -445,7 +461,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
             ),
             SizedBox(width: 12),
             Expanded(
-              flex: 5,
+              flex: 6,
               child: ProfileInputTextWidget(
                 value: state.dogProfile?.owner?.phone ?? '',
                 onChanged: (ownerPhone) => BlocProvider.of<DogProfileBloc>(

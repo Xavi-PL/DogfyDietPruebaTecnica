@@ -21,6 +21,8 @@ class LocationDatasourceImpl implements LocationDatasource {
       final result = await Geolocator.requestPermission();
       if (result == LocationPermission.denied) {
         throw LocationPermissionDenied();
+      } else if (result == LocationPermission.deniedForever) {
+        throw LocationPermissionDeniedForever();
       }
     }
 
