@@ -5,6 +5,7 @@ import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/owner.da
 class DogProfileState {
   final int currentStep;
   final bool ready;
+  final bool finished;
 
   final List<Breed> availableBreeds;
   final DogProfile? dogProfile;
@@ -22,13 +23,13 @@ class DogProfileState {
     this.isLoadingAddress = false,
     this.isCreatingDogProfile = false,
     this.errorMessage = '',
+    this.finished = false,
   });
 
   factory DogProfileState.initial() => DogProfileState(
     dogProfile: DogProfile(owner: Owner()),
     currentStep: 0,
     availableBreeds: const [],
-    ready: false,
   );
 
   DogProfileState copyWith({
@@ -40,6 +41,7 @@ class DogProfileState {
     bool? isLoadingAddress,
     bool? isCreatingDogProfile,
     String? errorMessage,
+    bool? finished,
   }) {
     return DogProfileState(
       currentStep: currentStep ?? this.currentStep,
@@ -50,6 +52,7 @@ class DogProfileState {
       isCreatingDogProfile: isCreatingDogProfile ?? this.isCreatingDogProfile,
       ready: ready ?? this.ready,
       errorMessage: errorMessage ?? this.errorMessage,
+      finished: finished ?? this.finished,
     );
   }
 

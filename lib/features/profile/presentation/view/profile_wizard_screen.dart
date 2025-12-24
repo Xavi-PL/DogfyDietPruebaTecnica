@@ -7,6 +7,7 @@ import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/owner.da
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_state.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/view/profile_wizard_finish.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/view/profile_wizard_loading.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/view/profile_wizard_step.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_breed_selector_widget.dart';
@@ -49,7 +50,8 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
       child: BlocListener<DogProfileBloc, DogProfileState>(
         listenWhen: (prev, next) =>
             prev.currentStep != next.currentStep ||
-            prev.errorMessage != next.errorMessage,
+            prev.errorMessage != next.errorMessage ||
+            prev.finished != next.finished,
         listener: (context, state) {
           if (!_controller.hasClients) {
             return;
@@ -83,7 +85,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
 
             return Scaffold(
               appBar: AppBar(
-                title: state.ready
+                title: state.ready && !state.finished
                     ? LinearProgressIndicator(
                         borderRadius: BorderRadius.circular(360),
                         value: (state.currentStep + 1) / steps.length,
@@ -114,7 +116,9 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
                   ),
                 ),
                 child: state.ready
-                    ? PageView(controller: _controller, children: steps)
+                    ? state.finished
+                          ? const ProfileWizardFinish()
+                          : PageView(controller: _controller, children: steps)
                     : const ProfileWizardLoading(),
               ),
             );

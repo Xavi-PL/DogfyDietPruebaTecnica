@@ -1,3 +1,4 @@
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_button_widget.dart';
 import 'package:flutter/material.dart';
 
 class ProfileStepNextButtonWidget extends StatelessWidget {
@@ -11,30 +12,12 @@ class ProfileStepNextButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Color(0xffef6948),
-      borderRadius: BorderRadius.all(Radius.circular(360)),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: InkWell(
-        onTap: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-          onPressed();
-        },
-        child: SizedBox(
-          height: 70,
-          width: double.infinity,
-          child: Center(
-            child: Text(
-              lastStep ? "Finalizar" : "Continuar",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ),
-      ),
+    return ProfileButtonWidget(
+      onPressed: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+        onPressed();
+      },
+      text: lastStep ? "Finalizar" : "Continuar",
     );
   }
 }

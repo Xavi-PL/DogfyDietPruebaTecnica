@@ -119,3 +119,7 @@ class CreateDogProfileRequested extends DogProfileEvent {
 }
 
 class ClearErrorMessage extends DogProfileEvent {}
+
+class ProfileFinished extends DogProfileEvent {}
+
+class NewProfile extends DogProfileEvent {}

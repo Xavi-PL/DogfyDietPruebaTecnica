@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dogfy_diet_prueba_tecnica/core/platform/location/domain/error/location_exception.dart';
 import 'package:dogfy_diet_prueba_tecnica/core/platform/location/domain/usecase/get_current_address.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_profile.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/owner.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/clear_dog_profile_draft.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/create_dog_profile.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/get_dog_breeds.dart';
@@ -56,6 +57,8 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     on<GetAddressEvent>(onGetAddressEvent);
     on<CreateDogProfileRequested>(onCreateDogProfileRequested);
     on<ClearErrorMessage>(onClearErrorMessage);
+    on<ProfileFinished>(onProfileFinished);
+    on<NewProfile>(onNewProfile);
 
     // Execute the profile started event when the bloc is initialized.
     add(ProfileStarted());
@@ -360,5 +363,20 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     Emitter<DogProfileState> emit,
   ) {
     emit(state.copyWith(errorMessage: ''));
+  }
+
+  void onProfileFinished(ProfileFinished event, Emitter<DogProfileState> emit) {
+    emit(state.copyWith(finished: true));
+  }
+
+  void onNewProfile(NewProfile event, Emitter<DogProfileState> emit) async {
+    await clearDogProfileDraft();
+    emit(
+      state.copyWith(
+        currentStep: 0,
+        dogProfile: DogProfile(owner: Owner()),
+        finished: false,
+      ),
+    );
   }
 }
