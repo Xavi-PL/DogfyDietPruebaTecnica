@@ -1,9 +1,10 @@
+import 'package:dogfy_diet_prueba_tecnica/core/di/injection.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/view/profile_wizard_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
-  initializeDateFormatting();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupInjection();
   runApp(const MyApp());
 }
 

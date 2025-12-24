@@ -40,6 +40,7 @@ void registerDogProfileModule() {
       saveDogProfileDraft: getIt(),
       loadDogProfileDraft: getIt(),
       clearDogProfileDraft: getIt(),
+      getCurrentAddress: getIt(),
     ),
   );
 }

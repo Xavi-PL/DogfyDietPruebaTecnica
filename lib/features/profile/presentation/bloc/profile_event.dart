@@ -106,3 +106,5 @@ class SaveDraftRequested extends DogProfileEvent {
 }
 
 class PreviousStep extends DogProfileEvent {}
+
+class GetAddressEvent extends DogProfileEvent {}

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dogfy_diet_prueba_tecnica/features/profile/data/model/breed_dto.dart';
-import 'package:dogfy_diet_prueba_tecnica/features/profile/data/model/dog_profile_dto.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/breed.dart';
 
 class BreedMapper {

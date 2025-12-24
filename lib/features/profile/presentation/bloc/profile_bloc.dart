@@ -1,19 +1,24 @@
+import 'package:alert_info/alert_info.dart';
+import 'package:dogfy_diet_prueba_tecnica/core/platform/location/domain/usecase/get_current_address.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/clear_dog_profile_draft.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/load_dog_profile_draft.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/save_dog_profile_draft.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_state.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
   final SaveDogProfileDraftUseCase saveDogProfileDraft;
   final LoadDogProfileDraftUseCase loadDogProfileDraft;
   final ClearDogProfileDraftUseCase clearDogProfileDraft;
+  final GetCurrentAddress getCurrentAddress;
 
   DogProfileBloc({
     required this.saveDogProfileDraft,
     required this.loadDogProfileDraft,
     required this.clearDogProfileDraft,
+    required this.getCurrentAddress,
   }) : super(DogProfileState.initial()) {
     on<BreedSelected>(onBreedSelected);
     on<DogNameSet>(onDogNameSet);
@@ -35,6 +40,7 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     on<NextStep>(onNextStep);
     on<PreviousStep>(onPreviousStep);
     on<SaveDraftRequested>(onSaveDraftRequested);
+    on<GetAddressEvent>(onGetAddressEvent);
   }
 
   void onBreedSelected(BreedSelected event, Emitter<DogProfileState> emit) {
@@ -218,5 +224,20 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
 
   void onPreviousStep(PreviousStep event, Emitter<DogProfileState> emit) {
     emit(state.copyWith(currentStep: state.currentStep - 1));
+  }
+
+  void onGetAddressEvent(
+    GetAddressEvent event,
+    Emitter<DogProfileState> emit,
+  ) async {
+    emit(state.copyWith(isLoadingAddress: true));
+    await getCurrentAddress()
+        .then((value) {
+          add(DogOwnerAddressSet(ownerAddress: value!));
+        })
+        .onError((error, stackTrace) {
+          print(error);
+        });
+    emit(state.copyWith(isLoadingAddress: false));
   }
 }

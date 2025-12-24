@@ -7,12 +7,14 @@ class DogProfileState {
   final List<Breed> availableBreeds;
   final DogProfile? dogProfile;
   final bool moreThanOneDog;
+  final bool isLoadingAddress;
 
   DogProfileState({
     required this.currentStep,
     this.availableBreeds = const [],
     this.moreThanOneDog = false,
     this.dogProfile,
+    this.isLoadingAddress = false,
   });
 
   factory DogProfileState.initial() => DogProfileState(
@@ -37,12 +39,14 @@ class DogProfileState {
     DogProfile? dogProfile,
     List<Breed>? availableBreeds,
     bool? moreThanOneDog,
+    bool? isLoadingAddress,
   }) {
     return DogProfileState(
       currentStep: currentStep ?? this.currentStep,
       dogProfile: dogProfile ?? this.dogProfile,
       availableBreeds: availableBreeds ?? this.availableBreeds,
       moreThanOneDog: moreThanOneDog ?? this.moreThanOneDog,
+      isLoadingAddress: isLoadingAddress ?? this.isLoadingAddress,
     );
   }
 

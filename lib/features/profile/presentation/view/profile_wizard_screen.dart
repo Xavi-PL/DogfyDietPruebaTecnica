@@ -3,7 +3,6 @@ import 'package:dogfy_diet_prueba_tecnica/core/utils/input_utilities.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/di/profile_module.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_profile.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/owner.dart';
-import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/save_dog_profile_draft.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_state.dart';
@@ -32,7 +31,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = PageController(initialPage: 0);
+    _controller = PageController(initialPage: 8);
   }
 
   @override
@@ -458,8 +457,16 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
               height: 50,
               child: IconButton(
                 padding: EdgeInsets.zero,
-                icon: Icon(Icons.my_location_rounded),
-                onPressed: () {},
+                icon: state.isLoadingAddress
+                    ? SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: const CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.my_location_rounded),
+                onPressed: () => BlocProvider.of<DogProfileBloc>(
+                  context,
+                ).add(GetAddressEvent()),
                 style: ButtonStyle(
                   shape: WidgetStatePropertyAll(
                     RoundedRectangleBorder(
