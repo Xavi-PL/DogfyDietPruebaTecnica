@@ -1,7 +1,7 @@
+import 'package:dogfy_diet_prueba_tecnica/features/profile/data/datasource/dog_profile_local_datasource.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_profile.dart';
-import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/repository/dog_profile_draft_repository.dart';
 
-class DogProfileDraftRepositoryImpl implements DogProfileDraftRepository {
+class DogProfileLocalDataSourceImpl implements DogProfileLocalDataSource {
   @override
   Future<void> clearDogProfileDraft() {
     throw UnimplementedError();

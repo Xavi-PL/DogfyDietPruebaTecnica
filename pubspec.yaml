@@ -39,6 +39,7 @@ dependencies:
   hive: ^2.2.3
   intl: ^0.20.2
   alert_info: ^0.0.8
+  get_it: ^9.2.0
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,9 @@
 import 'package:dogfy_diet_prueba_tecnica/core/utils/date_utilities.dart';
 import 'package:dogfy_diet_prueba_tecnica/core/utils/input_utilities.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/di/profile_module.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_profile.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/owner.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/save_dog_profile_draft.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_state.dart';
@@ -42,7 +44,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DogProfileBloc(),
+      create: (context) => getIt<DogProfileBloc>(),
       child: BlocListener<DogProfileBloc, DogProfileState>(
         listenWhen: (prev, next) => prev.currentStep != next.currentStep,
         listener: (context, state) {

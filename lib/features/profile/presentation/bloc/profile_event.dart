@@ -100,4 +100,9 @@ class DogOwnerAddressSet extends DogProfileEvent {
 
 class NextStep extends DogProfileEvent {}
 
+class SaveDraftRequested extends DogProfileEvent {
+  final DogProfile dogProfile;
+  SaveDraftRequested({required this.dogProfile});
+}
+
 class PreviousStep extends DogProfileEvent {}

@@ -1,9 +1,20 @@
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/clear_dog_profile_draft.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/load_dog_profile_draft.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/save_dog_profile_draft.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
-  DogProfileBloc() : super(DogProfileState.initial()) {
+  final SaveDogProfileDraftUseCase saveDogProfileDraft;
+  final LoadDogProfileDraftUseCase loadDogProfileDraft;
+  final ClearDogProfileDraftUseCase clearDogProfileDraft;
+
+  DogProfileBloc({
+    required this.saveDogProfileDraft,
+    required this.loadDogProfileDraft,
+    required this.clearDogProfileDraft,
+  }) : super(DogProfileState.initial()) {
     on<BreedSelected>(onBreedSelected);
     on<DogNameSet>(onDogNameSet);
     on<MoreThanOneDogTapped>(onMoreThanOneDogTapped);
@@ -23,6 +34,7 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     on<DogOwnerAddressSet>(onDogOwnerAddressSet);
     on<NextStep>(onNextStep);
     on<PreviousStep>(onPreviousStep);
+    on<SaveDraftRequested>(onSaveDraftRequested);
   }
 
   void onBreedSelected(BreedSelected event, Emitter<DogProfileState> emit) {
@@ -195,6 +207,13 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
 
   void onNextStep(NextStep event, Emitter<DogProfileState> emit) {
     emit(state.copyWith(currentStep: state.currentStep + 1));
+  }
+
+  Future<void> onSaveDraftRequested(
+    SaveDraftRequested event,
+    Emitter<DogProfileState> emit,
+  ) async {
+    await saveDogProfileDraft(event.dogProfile);
   }
 
   void onPreviousStep(PreviousStep event, Emitter<DogProfileState> emit) {
