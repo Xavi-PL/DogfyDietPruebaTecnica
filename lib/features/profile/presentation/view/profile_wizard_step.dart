@@ -5,7 +5,6 @@ import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/pro
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_step_icon_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_step_next_button_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DogProfileWizardStep extends StatelessWidget {
@@ -14,6 +13,7 @@ class DogProfileWizardStep extends StatelessWidget {
   final List<Widget> content;
   final DogProfileState state;
   final String? description;
+  final bool lastStep;
 
   const DogProfileWizardStep({
     super.key,
@@ -22,6 +22,7 @@ class DogProfileWizardStep extends StatelessWidget {
     required this.content,
     required this.state,
     this.description,
+    this.lastStep = false,
   });
 
   @override
@@ -70,7 +71,10 @@ class DogProfileWizardStep extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16),
-          ProfileStepNextButtonWidget(onPressed: () => validateStep(context)),
+          ProfileStepNextButtonWidget(
+            onPressed: () => validateStep(context),
+            lastStep: lastStep,
+          ),
         ],
       ),
     );
@@ -78,7 +82,13 @@ class DogProfileWizardStep extends StatelessWidget {
 
   void validateStep(BuildContext context) {
     if (state.isStepValid()) {
-      BlocProvider.of<DogProfileBloc>(context).add(NextStep());
+      if (lastStep) {
+        BlocProvider.of<DogProfileBloc>(
+          context,
+        ).add(CreateDogProfileRequested(dogProfile: state.dogProfile!));
+      } else {
+        BlocProvider.of<DogProfileBloc>(context).add(NextStep());
+      }
     } else {
       AlertInfo.show(
         context: context,

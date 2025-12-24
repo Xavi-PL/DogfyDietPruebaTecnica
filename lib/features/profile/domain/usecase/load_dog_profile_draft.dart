@@ -6,7 +6,7 @@ class LoadDogProfileDraftUseCase {
 
   LoadDogProfileDraftUseCase(this.repository);
 
-  Future<DogProfile?> call() async {
+  Future<DogProfile> call() async {
     return repository.loadDogProfileDraft();
   }
 }

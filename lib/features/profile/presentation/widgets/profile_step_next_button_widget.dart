@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 
 class ProfileStepNextButtonWidget extends StatelessWidget {
   final Function() onPressed;
-  const ProfileStepNextButtonWidget({super.key, required this.onPressed});
+  final bool lastStep;
+  const ProfileStepNextButtonWidget({
+    super.key,
+    required this.onPressed,
+    this.lastStep = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +25,7 @@ class ProfileStepNextButtonWidget extends StatelessWidget {
           width: double.infinity,
           child: Center(
             child: Text(
-              "Continuar",
+              lastStep ? "Finalizar" : "Continuar",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,

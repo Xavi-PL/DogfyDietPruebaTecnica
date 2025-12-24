@@ -31,7 +31,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = PageController(initialPage: 8);
+    _controller = PageController(initialPage: 0);
   }
 
   @override

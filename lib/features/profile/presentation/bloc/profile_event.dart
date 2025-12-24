@@ -4,6 +4,8 @@ import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/owner.da
 
 sealed class DogProfileEvent {}
 
+class ProfileStarted extends DogProfileEvent {}
+
 // Setting the breed is the first step of the form. Mandatory before saving a draft of a profile.
 class BreedSelected extends DogProfileEvent {
   final Breed breed;
@@ -108,3 +110,8 @@ class SaveDraftRequested extends DogProfileEvent {
 class PreviousStep extends DogProfileEvent {}
 
 class GetAddressEvent extends DogProfileEvent {}
+
+class CreateDogProfileRequested extends DogProfileEvent {
+  final DogProfile dogProfile;
+  CreateDogProfileRequested({required this.dogProfile});
+}

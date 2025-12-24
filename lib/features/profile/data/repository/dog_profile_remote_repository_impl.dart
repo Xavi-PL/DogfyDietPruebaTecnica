@@ -14,7 +14,7 @@ class DogProfileRemoteRepositoryImpl implements DogProfileRemoteRepository {
   }
 
   @override
-  Future<void> createDogProfile(DogProfile dogProfile) {
+  Future<bool> createDogProfile(DogProfile dogProfile) {
     return remote.createDogProfile(dogProfile);
   }
 }

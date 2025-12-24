@@ -13,12 +13,17 @@ class DogProfileLocalRepositoryImpl implements DogProfileLocalRepository {
   }
 
   @override
-  Future<DogProfile?> loadDogProfileDraft() async {
+  Future<DogProfile> loadDogProfileDraft() async {
     return local.loadDogProfileDraft();
   }
 
   @override
   Future<void> saveDogProfileDraft(DogProfile dogProfile) async {
     return local.saveDogProfileDraft(dogProfile);
+  }
+
+  @override
+  Future<bool> hasDogProfileDraft() async {
+    return local.hasDogProfileDraft();
   }
 }

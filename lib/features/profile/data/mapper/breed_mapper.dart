@@ -14,16 +14,21 @@ class BreedMapper {
     return BreedDto(id: map['id'] as int, name: map['name'] as String);
   }
 
-  Breed? toDomain(BreedDto? breedDto) {
-    return Breed(id: breedDto?.id, name: breedDto?.name);
+  Breed toDomain(BreedDto breedDto) {
+    return Breed(id: breedDto.id, name: breedDto.name);
   }
 
-  BreedDto fromDomain(Breed? breed) {
-    return BreedDto(id: breed?.id, name: breed?.name);
+  BreedDto fromDomain(Breed breed) {
+    return BreedDto(id: breed.id, name: breed.name);
   }
 
   String toJson(BreedDto? breedDto) => jsonEncode(toMap(breedDto));
 
   BreedDto fromJson(String json) =>
       fromMap(jsonDecode(json) as Map<String, dynamic>);
+
+  List<BreedDto> fromJsonList(Map<String, dynamic> json) =>
+      (json['breeds'] as List<dynamic>)
+          .map((breedJson) => fromMap(breedJson))
+          .toList();
 }

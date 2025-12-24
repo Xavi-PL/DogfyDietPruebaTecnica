@@ -20,11 +20,11 @@ class DogProfileLocalDataSourceImpl implements DogProfileLocalDataSource {
   }
 
   @override
-  Future<DogProfile?> loadDogProfileDraft() async {
+  Future<DogProfile> loadDogProfileDraft() async {
     final box = await _box();
     final json = box.get(_key);
     if (json == null || json.isEmpty) {
-      return null;
+      throw Exception('There is no draft saved');
     }
     return _mapper.toDomain(_mapper.fromJson(json));
   }

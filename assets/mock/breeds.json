@@ -1,0 +1,44 @@
+{
+    "breeds": [
+        {
+            "id": 1,
+            "name": "Labrador Retriever"
+        },
+        {
+            "id": 2,
+            "name": "German Shepherd"
+        },
+        {
+            "id": 3,
+            "name": "Golden Retriever"
+        },
+        {
+            "id": 4,
+            "name": "French Bulldog"
+        },
+        {
+            "id": 5,
+            "name": "Bulldog"
+        },
+        {
+            "id": 6,
+            "name": "Beagle"
+        },
+        {
+            "id": 7,
+            "name": "Poodle"
+        },
+        {
+            "id": 8,
+            "name": "Rottweiler"
+        },
+        {
+            "id": 9,
+            "name": "Yorkshire Terrier"
+        },
+        {
+            "id": 10,
+            "name": "Dachshund"
+        }
+    ]
+}

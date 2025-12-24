@@ -8,6 +8,7 @@ class DogProfileState {
   final DogProfile? dogProfile;
   final bool moreThanOneDog;
   final bool isLoadingAddress;
+  final bool isCreatingDogProfile;
 
   DogProfileState({
     required this.currentStep,
@@ -15,23 +16,13 @@ class DogProfileState {
     this.moreThanOneDog = false,
     this.dogProfile,
     this.isLoadingAddress = false,
+    this.isCreatingDogProfile = false,
   });
 
   factory DogProfileState.initial() => DogProfileState(
     dogProfile: DogProfile(owner: Owner()),
     currentStep: 0,
-    availableBreeds: const [
-      Breed(name: 'Labrador', id: 1),
-      Breed(name: 'Golden Retriever', id: 2),
-      Breed(name: 'Breed 3', id: 3),
-      Breed(name: 'Breed 4', id: 4),
-      Breed(name: 'Breed 5', id: 5),
-      Breed(name: 'Breed 6', id: 6),
-      Breed(name: 'Breed 7', id: 7),
-      Breed(name: 'Breed 8', id: 8),
-      Breed(name: 'Breed 9', id: 9),
-      Breed(name: 'Breed 10', id: 10),
-    ],
+    availableBreeds: const [],
   );
 
   DogProfileState copyWith({
@@ -40,6 +31,7 @@ class DogProfileState {
     List<Breed>? availableBreeds,
     bool? moreThanOneDog,
     bool? isLoadingAddress,
+    bool? isCreatingDogProfile,
   }) {
     return DogProfileState(
       currentStep: currentStep ?? this.currentStep,
@@ -47,6 +39,7 @@ class DogProfileState {
       availableBreeds: availableBreeds ?? this.availableBreeds,
       moreThanOneDog: moreThanOneDog ?? this.moreThanOneDog,
       isLoadingAddress: isLoadingAddress ?? this.isLoadingAddress,
+      isCreatingDogProfile: isCreatingDogProfile ?? this.isCreatingDogProfile,
     );
   }
 
@@ -69,7 +62,11 @@ class DogProfileState {
       case 7:
         return dogProfile?.gastronomy != null;
       case 8:
-        return dogProfile?.owner != null;
+        return dogProfile?.owner!.name != null &&
+            dogProfile?.owner!.email != null &&
+            dogProfile?.owner!.country != null &&
+            dogProfile?.owner!.phone != null &&
+            dogProfile?.owner!.address != null;
       default:
         return false;
     }

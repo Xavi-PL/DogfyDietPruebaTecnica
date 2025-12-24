@@ -7,5 +7,5 @@ abstract interface class DogProfileRemoteRepository {
   Future<List<Breed>> fetchDogBreeds();
 
   /// Creates a new dog profile.
-  Future<void> createDogProfile(DogProfile dogProfile);
+  Future<bool> createDogProfile(DogProfile dogProfile);
 }

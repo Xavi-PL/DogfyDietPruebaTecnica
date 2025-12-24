@@ -6,8 +6,11 @@ abstract interface class DogProfileLocalRepository {
   Future<void> saveDogProfileDraft(DogProfile dogProfile);
 
   /// Loads the dog profile draft.
-  Future<DogProfile?> loadDogProfileDraft();
+  Future<DogProfile> loadDogProfileDraft();
 
   /// Clears the dog profile draft.
   Future<void> clearDogProfileDraft();
+
+  /// Checks if there is a dog profile draft.
+  Future<bool> hasDogProfileDraft();
 }

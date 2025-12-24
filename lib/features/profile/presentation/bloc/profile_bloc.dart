@@ -1,11 +1,15 @@
-import 'package:alert_info/alert_info.dart';
+import 'dart:async';
+
 import 'package:dogfy_diet_prueba_tecnica/core/platform/location/domain/usecase/get_current_address.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_profile.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/clear_dog_profile_draft.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/create_dog_profile.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/get_dog_breeds.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/has_dog_profile_draft.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/load_dog_profile_draft.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/save_dog_profile_draft.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_state.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
@@ -13,13 +17,20 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
   final LoadDogProfileDraftUseCase loadDogProfileDraft;
   final ClearDogProfileDraftUseCase clearDogProfileDraft;
   final GetCurrentAddress getCurrentAddress;
+  final CreateDogProfileUseCase createDogProfile;
+  final GetDogBreedsUseCase getDogBreeds;
+  final HasDogProfileDraftUseCase hasDogProfileDraft;
 
   DogProfileBloc({
     required this.saveDogProfileDraft,
     required this.loadDogProfileDraft,
     required this.clearDogProfileDraft,
     required this.getCurrentAddress,
+    required this.createDogProfile,
+    required this.getDogBreeds,
+    required this.hasDogProfileDraft,
   }) : super(DogProfileState.initial()) {
+    on<ProfileStarted>(onProfileStarted);
     on<BreedSelected>(onBreedSelected);
     on<DogNameSet>(onDogNameSet);
     on<MoreThanOneDogTapped>(onMoreThanOneDogTapped);
@@ -41,6 +52,60 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     on<PreviousStep>(onPreviousStep);
     on<SaveDraftRequested>(onSaveDraftRequested);
     on<GetAddressEvent>(onGetAddressEvent);
+    on<CreateDogProfileRequested>(onCreateDogProfileRequested);
+
+    // Execute the profile started event when the bloc is initialized.
+    add(ProfileStarted());
+  }
+
+  void onProfileStarted(
+    ProfileStarted event,
+    Emitter<DogProfileState> emit,
+  ) async {
+    final breeds = await getDogBreeds.call();
+    emit(state.copyWith(availableBreeds: breeds));
+
+    // Check if there's a profile draft saved.
+    final hasDraft = await hasDogProfileDraft();
+    if (!hasDraft) return;
+
+    // Load the draft.
+    final cached = await loadDogProfileDraft();
+
+    // Compute which step to open based on cached data.
+    final step = _computeStepFromProfile(cached);
+
+    emit(state.copyWith(dogProfile: cached, currentStep: step));
+  }
+
+  int _computeStepFromProfile(DogProfile profile) {
+    bool step0() => profile.breed != null;
+    bool step1() => profile.name != null;
+    bool step2() => profile.sex != null && profile.sterilized != null;
+    bool step3() => profile.birthMonth != null && profile.birthYear != null;
+    bool step4() => profile.size != null && profile.weight != null;
+    bool step5() => profile.activity != null;
+    bool step6() => profile.hasIllness != null;
+    bool step7() => profile.gastronomy != null;
+    bool step8() => profile.owner != null;
+
+    final stepChecks = <bool Function()>[
+      step0,
+      step1,
+      step2,
+      step3,
+      step4,
+      step5,
+      step6,
+      step7,
+      step8,
+    ];
+
+    for (var i = 0; i < stepChecks.length; i++) {
+      if (!stepChecks[i]()) return i;
+    }
+    // If every step is valid the user is at the last step (even that is impossible to reach here)
+    return stepChecks.length - 1;
   }
 
   void onBreedSelected(BreedSelected event, Emitter<DogProfileState> emit) {
@@ -213,6 +278,7 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
 
   void onNextStep(NextStep event, Emitter<DogProfileState> emit) {
     emit(state.copyWith(currentStep: state.currentStep + 1));
+    add(SaveDraftRequested(dogProfile: state.dogProfile!));
   }
 
   Future<void> onSaveDraftRequested(
@@ -239,5 +305,19 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
           print(error);
         });
     emit(state.copyWith(isLoadingAddress: false));
+  }
+
+  Future<void> onCreateDogProfileRequested(
+    CreateDogProfileRequested event,
+    Emitter<DogProfileState> emit,
+  ) async {
+    emit(state.copyWith(isCreatingDogProfile: true));
+    await createDogProfile(event.dogProfile).then((value) {}).onError((
+      error,
+      stackTrace,
+    ) {
+      print(error);
+    });
+    emit(state.copyWith(isCreatingDogProfile: false));
   }
 }

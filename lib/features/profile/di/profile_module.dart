@@ -7,6 +7,9 @@ import 'package:dogfy_diet_prueba_tecnica/features/profile/data/repository/dog_p
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/repository/dog_profile_local_repository.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/repository/dog_profile_remote_repository.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/clear_dog_profile_draft.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/create_dog_profile.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/get_dog_breeds.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/has_dog_profile_draft.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/load_dog_profile_draft.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/usecase/save_dog_profile_draft.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart';
@@ -33,14 +36,19 @@ void registerDogProfileModule() {
   getIt.registerFactory(() => SaveDogProfileDraftUseCase(getIt()));
   getIt.registerFactory(() => LoadDogProfileDraftUseCase(getIt()));
   getIt.registerFactory(() => ClearDogProfileDraftUseCase(getIt()));
+  getIt.registerFactory(() => CreateDogProfileUseCase(getIt()));
+  getIt.registerFactory(() => GetDogBreedsUseCase(getIt()));
+  getIt.registerFactory(() => HasDogProfileDraftUseCase(getIt()));
 
-  // Bloc
   getIt.registerFactory(
     () => DogProfileBloc(
       saveDogProfileDraft: getIt(),
       loadDogProfileDraft: getIt(),
       clearDogProfileDraft: getIt(),
       getCurrentAddress: getIt(),
+      createDogProfile: getIt(),
+      getDogBreeds: getIt(),
+      hasDogProfileDraft: getIt(),
     ),
   );
 }

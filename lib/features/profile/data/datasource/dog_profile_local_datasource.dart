@@ -3,7 +3,7 @@ import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/dog_prof
 abstract interface class DogProfileLocalDataSource {
   Future<void> clearDogProfileDraft();
 
-  Future<DogProfile?> loadDogProfileDraft();
+  Future<DogProfile> loadDogProfileDraft();
 
   Future<void> saveDogProfileDraft(DogProfile dogProfile);
 

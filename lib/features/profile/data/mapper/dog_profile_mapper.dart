@@ -49,7 +49,7 @@ class DogProfileMapper {
 
   DogProfile toDomain(DogProfileDto dogProfileDto) {
     return DogProfile(
-      breed: BreedMapper().toDomain(dogProfileDto.breed),
+      breed: BreedMapper().toDomain(dogProfileDto.breed!),
       name: dogProfileDto.name,
       sex: Utilities.enumFromName<DogSex>(DogSex.values, dogProfileDto.sex),
       sterilized: dogProfileDto.sterilized,
@@ -74,7 +74,7 @@ class DogProfileMapper {
     return DogProfileDto(
       breed: dogProfile.breed == null
           ? null
-          : BreedMapper().fromDomain(dogProfile.breed),
+          : BreedMapper().fromDomain(dogProfile.breed!),
       name: dogProfile.name,
       sex: dogProfile.sex?.name,
       sterilized: dogProfile.sterilized,
