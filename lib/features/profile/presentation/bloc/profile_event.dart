@@ -6,6 +6,8 @@ sealed class DogProfileEvent {}
 
 class ProfileStarted extends DogProfileEvent {}
 
+class ProfileReady extends DogProfileEvent {}
+
 // Setting the breed is the first step of the form. Mandatory before saving a draft of a profile.
 class BreedSelected extends DogProfileEvent {
   final Breed breed;

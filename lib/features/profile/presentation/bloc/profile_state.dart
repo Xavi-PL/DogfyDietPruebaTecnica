@@ -4,6 +4,8 @@ import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/owner.da
 
 class DogProfileState {
   final int currentStep;
+  final bool ready;
+
   final List<Breed> availableBreeds;
   final DogProfile? dogProfile;
   final bool moreThanOneDog;
@@ -12,6 +14,7 @@ class DogProfileState {
 
   DogProfileState({
     required this.currentStep,
+    this.ready = false,
     this.availableBreeds = const [],
     this.moreThanOneDog = false,
     this.dogProfile,
@@ -23,10 +26,12 @@ class DogProfileState {
     dogProfile: DogProfile(owner: Owner()),
     currentStep: 0,
     availableBreeds: const [],
+    ready: false,
   );
 
   DogProfileState copyWith({
     int? currentStep,
+    bool? ready,
     DogProfile? dogProfile,
     List<Breed>? availableBreeds,
     bool? moreThanOneDog,
@@ -40,6 +45,7 @@ class DogProfileState {
       moreThanOneDog: moreThanOneDog ?? this.moreThanOneDog,
       isLoadingAddress: isLoadingAddress ?? this.isLoadingAddress,
       isCreatingDogProfile: isCreatingDogProfile ?? this.isCreatingDogProfile,
+      ready: ready ?? this.ready,
     );
   }
 

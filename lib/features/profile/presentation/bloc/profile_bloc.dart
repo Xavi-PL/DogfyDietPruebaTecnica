@@ -31,6 +31,7 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     required this.hasDogProfileDraft,
   }) : super(DogProfileState.initial()) {
     on<ProfileStarted>(onProfileStarted);
+    on<ProfileReady>(onProfileReady);
     on<BreedSelected>(onBreedSelected);
     on<DogNameSet>(onDogNameSet);
     on<MoreThanOneDogTapped>(onMoreThanOneDogTapped);
@@ -75,6 +76,7 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     // Compute which step to open based on cached data.
     final step = _computeStepFromProfile(cached);
 
+    add(ProfileReady());
     emit(state.copyWith(dogProfile: cached, currentStep: step));
   }
 
@@ -106,6 +108,10 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     }
     // If every step is valid the user is at the last step (even that is impossible to reach here)
     return stepChecks.length - 1;
+  }
+
+  void onProfileReady(ProfileReady event, Emitter<DogProfileState> emit) {
+    emit(state.copyWith(ready: true));
   }
 
   void onBreedSelected(BreedSelected event, Emitter<DogProfileState> emit) {

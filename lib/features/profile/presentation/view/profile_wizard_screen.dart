@@ -6,6 +6,7 @@ import 'package:dogfy_diet_prueba_tecnica/features/profile/domain/model/owner.da
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_event.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_state.dart';
+import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/view/profile_wizard_loading.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/view/profile_wizard_step.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_breed_selector_widget.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_date_dropdown_widget.dart';
@@ -47,6 +48,10 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
       child: BlocListener<DogProfileBloc, DogProfileState>(
         listenWhen: (prev, next) => prev.currentStep != next.currentStep,
         listener: (context, state) {
+          if (!_controller.hasClients) {
+            return;
+          }
+
           _controller.animateToPage(
             state.currentStep,
             duration: const Duration(milliseconds: 250),
@@ -55,15 +60,21 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
         },
         child: BlocBuilder<DogProfileBloc, DogProfileState>(
           builder: (context, state) {
-            List<Widget> steps = buildSteps(context, state);
+            if (state.ready && !_controller.hasClients) {
+              _controller = PageController(initialPage: state.currentStep);
+            }
+
+            List<Widget> steps = state.ready ? buildSteps(context, state) : [];
 
             return Scaffold(
               appBar: AppBar(
-                title: LinearProgressIndicator(
-                  borderRadius: BorderRadius.circular(360),
-                  value: (state.currentStep + 1) / steps.length,
-                  color: const Color(0xffffd44a),
-                ),
+                title: state.ready
+                    ? LinearProgressIndicator(
+                        borderRadius: BorderRadius.circular(360),
+                        value: (state.currentStep + 1) / steps.length,
+                        color: const Color(0xffffd44a),
+                      )
+                    : SizedBox(),
                 leading: state.currentStep > 0
                     ? IconButton(
                         icon: const Icon(Icons.arrow_back),
@@ -87,7 +98,9 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: PageView(controller: _controller, children: steps),
+                child: state.ready
+                    ? PageView(controller: _controller, children: steps)
+                    : const ProfileWizardLoading(),
               ),
             );
           },
@@ -117,11 +130,18 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
       title: '¿Cuál es la raza de tu perrete?',
       content: [
         ProfileBreedSelectorWidget(
-          selectedBreed: state.dogProfile?.breed,
-          onBreedSelected: (breed) => BlocProvider.of<DogProfileBloc>(
-            context,
-          ).add(BreedSelected(breed: breed)),
-          availableBreeds: state.availableBreeds,
+          selectedBreed: state.dogProfile!.breed?.name,
+          onBreedSelected: (breed) =>
+              BlocProvider.of<DogProfileBloc>(context).add(
+                BreedSelected(
+                  breed: state.availableBreeds.firstWhere(
+                    (e) => e.name == breed,
+                  ),
+                ),
+              ),
+          availableBreeds: state.availableBreeds
+              .map((e) => e.name ?? "")
+              .toList(),
         ),
       ],
     );

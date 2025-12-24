@@ -19,11 +19,11 @@ class OwnerMapper {
 
   OwnerDto fromMap(Map<String, dynamic> map) {
     return OwnerDto(
-      name: map['name'] as String,
-      email: map['email'] as String,
-      phone: map['phone'] as String,
-      country: map['country'] as String,
-      address: map['address'] as String,
+      name: map['name'] as String?,
+      email: map['email'] as String?,
+      phone: map['phone'] as String?,
+      country: map['country'] as String?,
+      address: map['address'] as String?,
     );
   }
 
