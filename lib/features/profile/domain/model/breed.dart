@@ -1,6 +1,6 @@
 class Breed {
-  final int id;
-  final String name;
+  final int? id;
+  final String? name;
 
-  const Breed({required this.id, required this.name});
+  const Breed({this.id, this.name});
 }

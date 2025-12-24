@@ -1,6 +1,6 @@
 class BreedDto {
-  final int id;
-  final String name;
+  final int? id;
+  final String? name;
 
-  BreedDto({required this.id, required this.name});
+  BreedDto({this.id, this.name});
 }

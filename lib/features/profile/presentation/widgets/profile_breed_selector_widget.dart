@@ -27,7 +27,7 @@ class ProfileBreedSelectorWidget extends StatelessWidget {
         hint: const Text('Selecciona una raza'),
         menuMaxHeight: 200,
         items: availableBreeds.map((breed) {
-          return DropdownMenuItem(value: breed, child: Text(breed.name));
+          return DropdownMenuItem(value: breed, child: Text(breed.name ?? ''));
         }).toList(),
         onChanged: (breed) {
           if (breed != null) {

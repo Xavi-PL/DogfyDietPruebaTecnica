@@ -8,17 +8,17 @@ class DogProfileLocalRepositoryImpl implements DogProfileLocalRepository {
   DogProfileLocalRepositoryImpl({required this.local});
 
   @override
-  Future<void> clearDogProfileDraft() {
+  Future<void> clearDogProfileDraft() async {
     return local.clearDogProfileDraft();
   }
 
   @override
-  Future<DogProfile> loadDogProfileDraft() {
+  Future<DogProfile?> loadDogProfileDraft() async {
     return local.loadDogProfileDraft();
   }
 
   @override
-  Future<void> saveDogProfileDraft(DogProfile dogProfile) {
+  Future<void> saveDogProfileDraft(DogProfile dogProfile) async {
     return local.saveDogProfileDraft(dogProfile);
   }
 }
