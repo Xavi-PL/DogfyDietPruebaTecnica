@@ -44,6 +44,7 @@ class LocationDatasourceImpl implements LocationDatasource {
     final p = placemarks?.first;
     final street = <String?>[
       p?.street,
+      p?.subThoroughfare,
       p?.subLocality,
       p?.locality,
       p?.postalCode,

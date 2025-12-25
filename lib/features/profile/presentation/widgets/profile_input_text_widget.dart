@@ -7,6 +7,7 @@ class ProfileInputTextWidget extends StatefulWidget {
   final Function(String) onChanged;
   final TextInputType keyboardType;
   final IconData? icon;
+  final IconData? suffixIcon;
   final List<TextInputFormatter> inputFormatters;
   final TextCapitalization textCapitalization;
 
@@ -19,6 +20,7 @@ class ProfileInputTextWidget extends StatefulWidget {
     this.textCapitalization = TextCapitalization.sentences,
     this.inputFormatters = const [],
     this.icon,
+    this.suffixIcon,
   });
 
   @override
@@ -70,9 +72,10 @@ class _ProfileInputTextWidgetState extends State<ProfileInputTextWidget> {
       textCapitalization: widget.textCapitalization,
       onChanged: (value) => widget.onChanged(value),
       decoration: InputDecoration(
+        prefixIcon: widget.icon != null ? Icon(widget.icon) : null,
+        suffixIcon: widget.suffixIcon != null ? Icon(widget.suffixIcon) : null,
         border: OutlineInputBorder(),
         label: Text(widget.label),
-        prefixIcon: widget.icon != null ? Icon(widget.icon) : null,
       ),
     );
   }

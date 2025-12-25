@@ -53,6 +53,12 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
             prev.errorMessage != next.errorMessage ||
             prev.finished != next.finished,
         listener: (context, state) {
+          if (state.currentStep == 8 &&
+              !state.isLoadingAddress &&
+              (state.dogProfile?.owner?.address?.isEmpty ?? true)) {
+            BlocProvider.of<DogProfileBloc>(context).add(GetAddressEvent());
+          }
+
           if (!_controller.hasClients) {
             return;
           }
@@ -484,44 +490,14 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
           ],
         ),
         SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: ProfileInputTextWidget(
-                value: state.dogProfile?.owner?.address ?? '',
-                onChanged: (ownerAddress) => BlocProvider.of<DogProfileBloc>(
-                  context,
-                ).add(DogOwnerAddressSet(ownerAddress: ownerAddress)),
-                label: 'Dirección',
-                keyboardType: TextInputType.streetAddress,
-              ),
-            ),
-            SizedBox(width: 12),
-            SizedBox(
-              width: 50,
-              height: 50,
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                icon: state.isLoadingAddress
-                    ? SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: const CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.my_location_rounded),
-                onPressed: () => BlocProvider.of<DogProfileBloc>(
-                  context,
-                ).add(GetAddressEvent()),
-                style: ButtonStyle(
-                  shape: WidgetStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+        ProfileInputTextWidget(
+          suffixIcon: state.isLoadingAddress ? Icons.my_location_rounded : null,
+          value: state.dogProfile?.owner?.address ?? '',
+          onChanged: (ownerAddress) => BlocProvider.of<DogProfileBloc>(
+            context,
+          ).add(DogOwnerAddressSet(ownerAddress: ownerAddress)),
+          label: 'Dirección',
+          keyboardType: TextInputType.streetAddress,
         ),
       ],
       description:
