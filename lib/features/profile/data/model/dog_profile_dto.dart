@@ -9,7 +9,7 @@ class DogProfileDto {
   final int? birthMonth;
   final int? birthYear;
   final String? size;
-  final double? weight;
+  final String? weight;
   final String? activity;
   final bool? hasIllness;
   final String? gastronomy;

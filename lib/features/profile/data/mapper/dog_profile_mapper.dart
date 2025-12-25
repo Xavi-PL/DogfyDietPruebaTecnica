@@ -37,7 +37,7 @@ class DogProfileMapper {
       birthMonth: map['birthMonth'] as int?,
       birthYear: map['birthYear'] as int?,
       size: map['size'] as String?,
-      weight: (map['weight'] as num?)?.toDouble(),
+      weight: map['weight'] as String?,
       activity: map['activity'] as String?,
       hasIllness: map['hasIllness'] as bool?,
       gastronomy: map['gastronomy'] as String?,

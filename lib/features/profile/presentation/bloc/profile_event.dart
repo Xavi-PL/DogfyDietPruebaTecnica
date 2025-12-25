@@ -54,7 +54,7 @@ class DogSizeSet extends DogProfileEvent {
 
 // Also from fifth step of the form.
 class DogWeightSet extends DogProfileEvent {
-  final double weight;
+  final String weight;
   DogWeightSet({required this.weight});
 }
 

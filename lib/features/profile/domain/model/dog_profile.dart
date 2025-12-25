@@ -23,7 +23,7 @@ class DogProfile {
   final int? birthYear;
 
   final DogSize? size;
-  final double? weight;
+  final String? weight;
 
   final DogActivity? activity;
 
@@ -56,7 +56,7 @@ class DogProfile {
     int? birthMonth,
     int? birthYear,
     DogSize? size,
-    double? weight,
+    String? weight,
     DogActivity? activity,
     bool? hasIllness,
     DogGastronomy? gastronomy,

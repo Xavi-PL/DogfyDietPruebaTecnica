@@ -39,3 +39,26 @@ class EmailInputFormatter extends TextInputFormatter {
     return newValue;
   }
 }
+
+class TwoDecimalInputFormatter extends TextInputFormatter {
+  final RegExp _regex = RegExp(r'^\d*\.?\d{0,2}$');
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    // Allow empty input
+    if (newValue.text.isEmpty) {
+      return newValue;
+    }
+
+    // Check regex
+    if (_regex.hasMatch(newValue.text)) {
+      return newValue;
+    }
+
+    // Reject change
+    return oldValue;
+  }
+}

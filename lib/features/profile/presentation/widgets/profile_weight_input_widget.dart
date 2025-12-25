@@ -1,10 +1,11 @@
+import 'package:dogfy_diet_prueba_tecnica/core/utils/input_utilities.dart';
 import 'package:dogfy_diet_prueba_tecnica/features/profile/presentation/widgets/profile_input_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ProfileWeightInputWidget extends StatelessWidget {
-  final double? currentWeight;
-  final Function(double) onWeightChanged;
+  final String? currentWeight;
+  final Function(String) onWeightChanged;
 
   const ProfileWeightInputWidget({
     super.key,
@@ -24,12 +25,12 @@ class ProfileWeightInputWidget extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.5,
           child: ProfileInputTextWidget(
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
               FilteringTextInputFormatter.deny(',', replacementString: '.'),
-              FilteringTextInputFormatter.digitsOnly,
+              TwoDecimalInputFormatter(),
             ],
-            onChanged: (weight) => onWeightChanged(double.parse(weight)),
+            onChanged: (weight) => onWeightChanged(weight),
             label: 'Kilogramos (kg)',
             value: currentWeight?.toString() ?? '',
           ),

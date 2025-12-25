@@ -349,12 +349,15 @@ class DogProfileBloc extends Bloc<DogProfileEvent, DogProfileState> {
     Emitter<DogProfileState> emit,
   ) async {
     emit(state.copyWith(isCreatingDogProfile: true));
-    await createDogProfile(event.dogProfile).then((value) {}).onError((
-      error,
-      stackTrace,
-    ) {
-      emit(state.copyWith(errorMessage: error.toString()));
-    });
+    await createDogProfile(event.dogProfile)
+        .then((value) {
+          if (value) {
+            add(ProfileFinished());
+          }
+        })
+        .onError((error, stackTrace) {
+          emit(state.copyWith(errorMessage: error.toString()));
+        });
     emit(state.copyWith(isCreatingDogProfile: false));
   }
 

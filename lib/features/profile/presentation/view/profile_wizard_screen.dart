@@ -118,7 +118,11 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
                 child: state.ready
                     ? state.finished
                           ? const ProfileWizardFinish()
-                          : PageView(controller: _controller, children: steps)
+                          : PageView(
+                              controller: _controller,
+                              physics: NeverScrollableScrollPhysics(),
+                              children: steps,
+                            )
                     : const ProfileWizardLoading(),
               ),
             );
@@ -420,6 +424,7 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
 
   Widget buildOwnerStep(BuildContext context, DogProfileState state) {
     return DogProfileWizardStep(
+      lastStep: true,
       emoji: '👍',
       title:
           '¡El menú especial para ${state.dogProfile?.name} está casi listo!',
