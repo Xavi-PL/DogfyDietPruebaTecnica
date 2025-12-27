@@ -1,0 +1,36 @@
+00:00 +0: loading /Users/Xavi/Appxs/Workspaces/DogfyDiet/dogfy_diet_prueba_tecnica/test/features/profile/presentation/bloc/profile_bloc_test.dart                                                      00:01 +0: loading /Users/Xavi/Appxs/Workspaces/DogfyDiet/dogfy_diet_prueba_tecnica/test/features/profile/presentation/bloc/profile_bloc_test.dart                                                      00:01 +0: (setUpAll)                                                                                                                                                                                   00:01 +0: DogProfileBloc CreateDogProfileRequested emits error on failure                                                                                                                              00:01 +0 -1: DogProfileBloc CreateDogProfileRequested emits error on failure [E]                                                                                                                       
+  Exception: Failed
+  package:mocktail/src/mocktail.dart 249:7                                                       When.thenThrow.<fn>
+  package:mocktail/src/mocktail.dart 131:37                                                      Mock.noSuchMethod
+  test/features/profile/presentation/bloc/profile_bloc_test.dart 30:7                            MockCreateDogProfileUseCase.call
+  package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart 352:27  DogProfileBloc.onCreateDogProfileRequested
+  package:bloc/src/bloc.dart 226:26                                                              Bloc.on.<fn>.handleEvent
+  package:bloc/src/bloc.dart 237:9                                                               Bloc.on.<fn>
+  ===== asynchronous gap ===========================
+  dart:async                                                                                     _Completer.completeError
+  package:bloc_test/src/bloc_test.dart 255:43                                                    _runZonedGuarded.<fn>
+  ===== asynchronous gap ===========================
+  dart:async                                                                                     _CustomZone.registerBinaryCallback
+  package:bloc/src/bloc.dart 226:13                                                              Bloc.on.<fn>.handleEvent
+  package:bloc/src/bloc.dart 237:9                                                               Bloc.on.<fn>
+  ===== asynchronous gap ===========================
+  dart:async                                                                                     _ForwardingStream.listen
+  package:bloc/src/bloc.dart 341:40                                                              _FlatMapStreamTransformer.bind.<fn>
+  dart:async                                                                                     _StreamImpl.listen
+  package:bloc/src/bloc.dart 240:7                                                               Bloc.on
+  package:dogfy_diet_prueba_tecnica/features/profile/presentation/bloc/profile_bloc.dart 58:5    new DogProfileBloc
+  test/features/profile/presentation/bloc/profile_bloc_test.dart 69:12                           main.buildBloc
+  test/features/profile/presentation/bloc/profile_bloc_test.dart 231:18                          main.<fn>.<fn>.<fn>
+  package:bloc_test/src/bloc_test.dart 201:25                                                    testBloc.<fn>
+  ===== asynchronous gap ===========================
+  dart:async                                                                                     _CustomZone.registerUnaryCallback
+  package:bloc_test/src/bloc_test.dart 199:7                                                     testBloc.<fn>
+  package:bloc_test/src/bloc_test.dart 252:15                                                    _runZonedGuarded.<fn>
+  dart:async                                                                                     runZonedGuarded
+  package:bloc_test/src/bloc_test.dart 251:3                                                     _runZonedGuarded
+  package:bloc_test/src/bloc_test.dart 198:11                                                    testBloc
+  package:bloc_test/src/bloc_test.dart 156:13                                                    blocTest.<fn>
+  
+
+To run this test again: /Users/Xavi/Flutter/bin/cache/dart-sdk/bin/dart test /Users/Xavi/Appxs/Workspaces/DogfyDiet/dogfy_diet_prueba_tecnica/test/features/profile/presentation/bloc/profile_bloc_test.dart -p vm --plain-name 'DogProfileBloc CreateDogProfileRequested emits error on failure'
+00:01 +0 -1: (tearDownAll)                                                                                                                                                                             00:01 +0 -1: Some tests failed.                                                                                                                                                                        
