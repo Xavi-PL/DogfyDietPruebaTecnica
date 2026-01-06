@@ -113,23 +113,25 @@ class _DogProfileWizardScreenState extends State<DogProfileWizardScreen> {
                       )
                     : null,
               ),
-              body: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+              body: SafeArea(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
                   ),
+                  child: state.ready
+                      ? state.finished
+                            ? const ProfileWizardFinish()
+                            : PageView(
+                                controller: _controller,
+                                physics: NeverScrollableScrollPhysics(),
+                                children: steps,
+                              )
+                      : const ProfileWizardLoading(),
                 ),
-                child: state.ready
-                    ? state.finished
-                          ? const ProfileWizardFinish()
-                          : PageView(
-                              controller: _controller,
-                              physics: NeverScrollableScrollPhysics(),
-                              children: steps,
-                            )
-                    : const ProfileWizardLoading(),
               ),
             );
           },
